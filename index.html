@@ -13,155 +13,157 @@
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#f5f7fa 0%,#e4e9f2 100%);min-height:100vh;color:#2d3436;padding-bottom:80px;-webkit-user-select:none;user-select:none}
         input,textarea{-webkit-user-select:text;user-select:text}
-        .header{text-align:center;padding:16px 16px 8px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.06);position:sticky;top:0;z-index:100}
+        .header{text-align:center;padding:14px 16px 6px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06);position:sticky;top:0;z-index:100}
         .header h1{font-size:22px;font-weight:700}.header .subtitle{font-size:12px;color:#636e72}
         .sync-bar{display:flex;justify-content:center;align-items:center;gap:6px;padding:4px 0 2px;font-size:10px;font-weight:600}
         .sync-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
         .sync-dot.online{background:#00b894}.sync-dot.offline{background:#d63031}.sync-dot.syncing{background:#fdcb6e;animation:pulse 1s infinite}
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
         .sync-status{color:#636e72}.sync-btn{border:none;background:none;color:#0984e3;font-size:10px;font-weight:700;cursor:pointer;padding:2px 6px;border-radius:4px}.sync-btn:active{background:#e3f2fd}
-        .tab-bar{display:flex;background:#fff;border-bottom:1px solid #e9ecef;position:sticky;top:72px;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,0.04);overflow-x:auto;-webkit-overflow-scrolling:touch}
-        .tab-btn{flex:0 0 auto;min-width:56px;padding:10px 4px;border:none;background:transparent;font-size:9px;font-weight:600;color:#b2bec3;cursor:pointer;border-bottom:3px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;transition:all 0.2s}
-        .tab-btn .tab-icon{font-size:17px}.tab-btn.active{color:#0984e3;border-bottom-color:#0984e3;background:rgba(9,132,227,0.03)}
-        .tab-content{display:none;padding:16px;max-width:480px;margin:0 auto;animation:fadeIn 0.25s ease}.tab-content.active{display:block}
+        .tab-bar{display:flex;background:#fff;border-bottom:1px solid #e9ecef;position:sticky;top:68px;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow-x:auto;-webkit-overflow-scrolling:touch}
+        .tab-btn{flex:0 0 auto;min-width:56px;padding:10px 4px;border:none;background:0 0;font-size:9px;font-weight:600;color:#b2bec3;cursor:pointer;border-bottom:3px solid transparent;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;transition:all .2s}
+        .tab-btn .tab-icon{font-size:17px}.tab-btn.active{color:#0984e3;border-bottom-color:#0984e3;background:rgba(9,132,227,.03)}
+        .tab-content{display:none;padding:16px;max-width:480px;margin:0 auto;animation:fadeIn .25s ease}.tab-content.active{display:block}
         @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        .card{background:#fff;border-radius:16px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04)}
-        .card-title{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+        .card{background:#fff;border-radius:16px;padding:20px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.04)}
+        .card-title{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
         .card-title.blue{color:#0984e3}.card-title.green{color:#00b894}.card-title.orange{color:#e17055}.card-title.purple{color:#6c5ce7}.card-title.teal{color:#00cec9}.card-title.pink{color:#e84393}.card-title.indigo{color:#5f27cd}
         .batch-scaler{background:linear-gradient(135deg,#6c5ce7,#a29bfe);border-radius:14px;padding:16px;margin-bottom:18px}
-        .batch-scaler-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:rgba(255,255,255,0.8);margin-bottom:8px}
+        .batch-scaler-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.8);margin-bottom:8px}
         .batch-scaler-row{display:flex;gap:8px;align-items:center}
-        .batch-scaler-row input{flex:1;padding:12px 14px;border:2px solid rgba(255,255,255,0.3);border-radius:10px;font-size:18px;font-weight:700;color:#fff;background:rgba(255,255,255,0.15);-webkit-appearance:none}
-        .batch-scaler-row input::placeholder{color:rgba(255,255,255,0.5)}.batch-scaler-row input:focus{outline:none;border-color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.25)}
-        .batch-scaler-row .scaler-unit{font-size:16px;font-weight:700;color:rgba(255,255,255,0.8)}
+        .batch-scaler-row input{flex:1;padding:12px 14px;border:2px solid rgba(255,255,255,.3);border-radius:10px;font-size:18px;font-weight:700;color:#fff;background:rgba(255,255,255,.15);-webkit-appearance:none}
+        .batch-scaler-row input::placeholder{color:rgba(255,255,255,.5)}.batch-scaler-row input:focus{outline:0;border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.25)}
+        .batch-scaler-row .scaler-unit{font-size:16px;font-weight:700;color:rgba(255,255,255,.8)}
         .batch-scaler-presets{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-        .preset-btn{padding:6px 14px;border:2px solid rgba(255,255,255,0.3);border-radius:8px;background:transparent;color:rgba(255,255,255,0.85);font-size:12px;font-weight:600;cursor:pointer}
-        .preset-btn:active,.preset-btn.active{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.7)}
-        .separator{display:flex;align-items:center;gap:10px;margin-bottom:16px;color:#b2bec3;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+        .preset-btn{padding:6px 14px;border:2px solid rgba(255,255,255,.3);border-radius:8px;background:0 0;color:rgba(255,255,255,.85);font-size:12px;font-weight:600;cursor:pointer}
+        .preset-btn:active,.preset-btn.active{background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.7)}
+        .separator{display:flex;align-items:center;gap:10px;margin-bottom:16px;color:#b2bec3;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
         .separator::before,.separator::after{content:'';flex:1;height:1px;background:#e9ecef}
         .input-group{margin-bottom:14px}.input-group:last-child{margin-bottom:0}
         .input-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
         .input-label span{font-size:13px;font-weight:600;color:#2d3436}.input-label .ratio{font-size:11px;color:#b2bec3;font-weight:500}
         .input-row{display:flex;gap:8px;align-items:center}.input-wrapper{flex:1}
-        .input-wrapper input{width:100%;padding:12px 14px;border:2px solid #e9ecef;border-radius:10px;font-size:16px;font-weight:500;color:#2d3436;background:#f8f9fa;-webkit-appearance:none;transition:all 0.2s}
-        .input-wrapper input:focus{outline:none;border-color:#0984e3;background:#fff;box-shadow:0 0 0 3px rgba(9,132,227,0.1)}
+        .input-wrapper input{width:100%;padding:12px 14px;border:2px solid #e9ecef;border-radius:10px;font-size:16px;font-weight:500;color:#2d3436;background:#f8f9fa;-webkit-appearance:none;transition:all .2s}
+        .input-wrapper input:focus{outline:0;border-color:#0984e3;background:#fff;box-shadow:0 0 0 3px rgba(9,132,227,.1)}
         .input-wrapper input.calculated{background:#f0f8ff;border-color:#b3d9ff;color:#0984e3}
         .unit-toggle{display:flex;background:#f1f2f6;border-radius:8px;overflow:hidden;flex-shrink:0}
-        .unit-toggle button{padding:10px 12px;border:none;background:transparent;font-size:12px;font-weight:600;color:#636e72;cursor:pointer}
+        .unit-toggle button{padding:10px 12px;border:none;background:0 0;font-size:12px;font-weight:600;color:#636e72;cursor:pointer}
         .unit-toggle button.active{background:#0984e3;color:#fff;border-radius:7px}
         .total-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:linear-gradient(135deg,#0984e3,#74b9ff);border-radius:12px;margin-top:16px}
-        .total-bar .label{font-size:13px;font-weight:600;color:rgba(255,255,255,0.85)}.total-bar .value{font-size:20px;font-weight:700;color:#fff}
-        .nic-strength-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:linear-gradient(135deg,#fdcb6e,#ffeaa7);border-radius:12px;margin-top:8px}
-        .nic-strength-bar .label{font-size:13px;font-weight:600;color:#6c5200}.nic-strength-bar .value{font-size:18px;font-weight:700;color:#6c5200}
+        .total-bar .label{font-size:13px;font-weight:600;color:rgba(255,255,255,.85)}.total-bar .value{font-size:20px;font-weight:700;color:#fff}
+        .nic-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:linear-gradient(135deg,#fdcb6e,#ffeaa7);border-radius:12px;margin-top:8px}
+        .nic-bar .label{font-size:13px;font-weight:600;color:#6c5200}.nic-bar .value{font-size:18px;font-weight:700;color:#6c5200}
         .vg-pg-bar{height:8px;border-radius:4px;background:#dfe6e9;margin-top:12px;overflow:hidden;display:flex}
-        .vg-pg-bar .vg-fill{background:linear-gradient(90deg,#00b894,#55efc4);transition:width 0.3s}.vg-pg-bar .pg-fill{background:linear-gradient(90deg,#0984e3,#74b9ff);transition:width 0.3s}
-        .ratio-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;font-weight:600}.ratio-labels .vg-label{color:#00b894}.ratio-labels .pg-label{color:#0984e3}
+        .vg-pg-bar .vg-fill{background:linear-gradient(90deg,#00b894,#55efc4);transition:width .3s}.vg-pg-bar .pg-fill{background:linear-gradient(90deg,#0984e3,#74b9ff);transition:width .3s}
+        .ratio-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;font-weight:600}.ratio-labels .vg-l{color:#00b894}.ratio-labels .pg-l{color:#0984e3}
         .profit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-        .profit-box{padding:14px;border-radius:12px;text-align:center}
-        .profit-box.cost{background:linear-gradient(135deg,#ffeaa7,#fdcb6e)}.profit-box.regular{background:linear-gradient(135deg,#55efc4,#00b894)}.profit-box.vip{background:linear-gradient(135deg,#a29bfe,#6c5ce7)}.profit-box.bottles{background:linear-gradient(135deg,#fab1a0,#e17055)}
-        .profit-box .box-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;opacity:0.75;margin-bottom:4px}.profit-box .box-value{font-size:20px;font-weight:700}.profit-box .box-sub{font-size:11px;opacity:0.65;margin-top:2px}
-        .profit-box.cost .box-label,.profit-box.cost .box-value,.profit-box.cost .box-sub{color:#6c5200}
-        .profit-box.regular .box-label,.profit-box.regular .box-value,.profit-box.regular .box-sub{color:#004d3a}
-        .profit-box.vip .box-label,.profit-box.vip .box-value,.profit-box.vip .box-sub{color:#fff}
-        .profit-box.bottles .box-label,.profit-box.bottles .box-value,.profit-box.bottles .box-sub{color:#5a1a00}
-        .profit-section-title{font-size:12px;font-weight:600;color:#636e72;text-align:center;margin:12px 0 8px;text-transform:uppercase;letter-spacing:0.5px}
-        .reset-btn,.save-btn,.deduct-btn,.log-batch-btn,.add-sale-btn,.backup-btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s}
-        .reset-btn{background:#dfe6e9;color:#636e72}.reset-btn:active{background:#b2bec3;transform:scale(0.98)}
-        .save-btn{background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff;margin-top:10px}
-        .deduct-btn{background:linear-gradient(135deg,#e17055,#fab1a0);color:#fff;margin-top:8px}
-        .log-batch-btn{background:linear-gradient(135deg,#00b894,#55efc4);color:#004d3a;margin-top:8px}
-        .add-sale-btn{background:linear-gradient(135deg,#5f27cd,#a29bfe);color:#fff;margin-top:10px}
-        .backup-btn{margin-top:8px}.backup-btn.export{background:linear-gradient(135deg,#00b894,#55efc4);color:#004d3a}
-        .backup-btn.import{background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff}
-        .save-btn:active,.deduct-btn:active,.log-batch-btn:active,.add-sale-btn:active,.backup-btn:active{transform:scale(0.98);opacity:0.9}
-        .supply-item{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #f1f2f6}.supply-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
-        .supply-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.supply-name{font-size:14px;font-weight:600}
-        .supply-stock{font-size:12px;font-weight:600;padding:3px 8px;border-radius:6px}
-        .supply-stock.good{background:#d4f5e9;color:#00b894}.supply-stock.warning{background:#ffeaa7;color:#d68910}.supply-stock.danger{background:#fab1a0;color:#d63031}
-        .supply-bar-bg{height:10px;border-radius:5px;background:#f1f2f6;overflow:hidden;margin-bottom:6px}
-        .supply-bar-fill{height:100%;border-radius:5px;transition:width 0.4s,background 0.3s}
-        .supply-bar-fill.good{background:linear-gradient(90deg,#00b894,#55efc4)}.supply-bar-fill.warning{background:linear-gradient(90deg,#fdcb6e,#ffeaa7)}.supply-bar-fill.danger{background:linear-gradient(90deg,#d63031,#ff7675)}
-        .supply-details{display:flex;justify-content:space-between;font-size:11px;color:#636e72}
-        .supply-input-row{display:flex;gap:8px;margin-top:8px;align-items:center}
-        .supply-input-row input{flex:1;padding:10px 12px;border:2px solid #e9ecef;border-radius:8px;font-size:14px;font-weight:500;background:#f8f9fa;-webkit-appearance:none}
-        .supply-input-row input:focus{outline:none;border-color:#0984e3;background:#fff}
-        .warning-banner{padding:14px 16px;border-radius:12px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600}
-        .warning-banner.danger{background:linear-gradient(135deg,#ff7675,#d63031);color:#fff}.warning-banner.warning{background:linear-gradient(135deg,#ffeaa7,#fdcb6e);color:#6c5200}.warning-banner.good{background:linear-gradient(135deg,#55efc4,#00b894);color:#004d3a}
-        .warning-banner .warn-icon{font-size:22px;flex-shrink:0}
-        .max-batch-card{background:linear-gradient(135deg,#dfe6e9,#b2bec3);border-radius:12px;padding:16px;text-align:center;margin-bottom:14px}
-        .max-batch-card .mbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:#636e72;margin-bottom:4px}.max-batch-card .mbv{font-size:28px;font-weight:700;color:#2d3436}.max-batch-card .mbs{font-size:12px;color:#636e72;margin-top:2px}
+        .pbox{padding:14px;border-radius:12px;text-align:center}
+        .pbox.cost{background:linear-gradient(135deg,#ffeaa7,#fdcb6e)}.pbox.reg{background:linear-gradient(135deg,#55efc4,#00b894)}.pbox.vip{background:linear-gradient(135deg,#a29bfe,#6c5ce7)}.pbox.btl{background:linear-gradient(135deg,#fab1a0,#e17055)}
+        .pbox .bl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;opacity:.75;margin-bottom:4px}.pbox .bv{font-size:20px;font-weight:700}.pbox .bs{font-size:11px;opacity:.65;margin-top:2px}
+        .pbox.cost .bl,.pbox.cost .bv,.pbox.cost .bs{color:#6c5200}
+        .pbox.reg .bl,.pbox.reg .bv,.pbox.reg .bs{color:#004d3a}
+        .pbox.vip .bl,.pbox.vip .bv,.pbox.vip .bs{color:#fff}
+        .pbox.btl .bl,.pbox.btl .bv,.pbox.btl .bs{color:#5a1a00}
+        .pst{font-size:12px;font-weight:600;color:#636e72;text-align:center;margin:12px 0 8px;text-transform:uppercase;letter-spacing:.5px}
+        .btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:8px}
+        .btn:active{transform:scale(.98);opacity:.9}
+        .btn-reset{background:#dfe6e9;color:#636e72}.btn-save{background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff}
+        .btn-deduct{background:linear-gradient(135deg,#e17055,#fab1a0);color:#fff}
+        .btn-log{background:linear-gradient(135deg,#00b894,#55efc4);color:#004d3a}
+        .btn-sale{background:linear-gradient(135deg,#5f27cd,#a29bfe);color:#fff}
+        .btn-sync{background:linear-gradient(135deg,#00b894,#55efc4);color:#004d3a}
+        .btn-pull{background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff}
+        .btn-export{background:linear-gradient(135deg,#00b894,#55efc4);color:#004d3a}
+        .btn-import{background:linear-gradient(135deg,#0984e3,#74b9ff);color:#fff}
+        .btn-clear{display:block;width:100%;padding:12px;border:2px solid #ff7675;border-radius:12px;background:0 0;color:#d63031;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px}.btn-clear:active{background:#ff7675;color:#fff}
+        .si{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #f1f2f6}.si:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+        .si-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.si-n{font-size:14px;font-weight:600}
+        .si-s{font-size:12px;font-weight:600;padding:3px 8px;border-radius:6px}
+        .si-s.good{background:#d4f5e9;color:#00b894}.si-s.warning{background:#ffeaa7;color:#d68910}.si-s.danger{background:#fab1a0;color:#d63031}
+        .si-bg{height:10px;border-radius:5px;background:#f1f2f6;overflow:hidden;margin-bottom:6px}
+        .si-f{height:100%;border-radius:5px;transition:width .4s,background .3s}
+        .si-f.good{background:linear-gradient(90deg,#00b894,#55efc4)}.si-f.warning{background:linear-gradient(90deg,#fdcb6e,#ffeaa7)}.si-f.danger{background:linear-gradient(90deg,#d63031,#ff7675)}
+        .si-d{display:flex;justify-content:space-between;font-size:11px;color:#636e72}
+        .si-r{display:flex;gap:8px;margin-top:8px;align-items:center}
+        .si-r input{flex:1;padding:10px 12px;border:2px solid #e9ecef;border-radius:8px;font-size:14px;font-weight:500;background:#f8f9fa;-webkit-appearance:none}
+        .si-r input:focus{outline:0;border-color:#0984e3;background:#fff}
+        .wb{padding:14px 16px;border-radius:12px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600}
+        .wb.danger{background:linear-gradient(135deg,#ff7675,#d63031);color:#fff}.wb.warning{background:linear-gradient(135deg,#ffeaa7,#fdcb6e);color:#6c5200}.wb.good{background:linear-gradient(135deg,#55efc4,#00b894);color:#004d3a}
+        .wb .wi{font-size:22px;flex-shrink:0}
+        .mbc{background:linear-gradient(135deg,#dfe6e9,#b2bec3);border-radius:12px;padding:16px;text-align:center;margin-bottom:14px}
+        .mbc .ml{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#636e72;margin-bottom:4px}.mbc .mv{font-size:28px;font-weight:700;color:#2d3436}.mbc .ms{font-size:12px;color:#636e72;margin-top:2px}
         .supply-badge{display:none;position:absolute;top:2px;right:8%;width:8px;height:8px;border-radius:50%;background:#d63031}.supply-badge.visible{display:block}
-        .recipe-item{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#f8f9fa;border-radius:12px;margin-bottom:8px;border:1px solid #e9ecef}
-        .recipe-item .recipe-info{flex:1}.recipe-item .recipe-name{font-size:14px;font-weight:600}.recipe-item .recipe-detail{font-size:11px;color:#636e72;margin-top:2px}
-        .recipe-item .recipe-actions{display:flex;gap:6px}
-        .recipe-action-btn{padding:8px 12px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
-        .recipe-action-btn.load{background:#0984e3;color:#fff}.recipe-action-btn.delete{background:#ff7675;color:#fff}.recipe-action-btn:active{transform:scale(0.95)}
-        .save-recipe-area{display:flex;gap:8px;margin-bottom:16px}
-        .save-recipe-area input{flex:1;padding:12px 14px;border:2px solid #e9ecef;border-radius:10px;font-size:14px;font-weight:500;background:#f8f9fa;-webkit-appearance:none}
-        .save-recipe-area input:focus{outline:none;border-color:#6c5ce7;background:#fff}
-        .save-recipe-btn{padding:12px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:#fff;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
-        .empty-state{text-align:center;padding:30px 20px;color:#b2bec3}.empty-state .empty-icon{font-size:40px;margin-bottom:8px}.empty-state .empty-text{font-size:14px;font-weight:500}
-        .history-stats,.sales-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
-        .stat-box{background:#fff;border-radius:12px;padding:12px 8px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04)}
-        .stat-box .stat-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:#636e72;margin-bottom:4px}.stat-box .stat-value{font-size:18px;font-weight:700;color:#2d3436}.stat-box .stat-sub{font-size:10px;color:#b2bec3;margin-top:2px}
-        .history-item{padding:14px 16px;background:#f8f9fa;border-radius:12px;margin-bottom:8px;border:1px solid #e9ecef}
-        .history-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}.history-date{font-size:13px;font-weight:700}.history-time{font-size:11px;color:#636e72}
-        .history-batch-size{font-size:14px;font-weight:700;color:#0984e3;background:#e3f2fd;padding:3px 10px;border-radius:6px}
-        .history-details{display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px;color:#636e72}.history-details span{display:flex;justify-content:space-between}.history-details .val{font-weight:600;color:#2d3436}
-        .history-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid #e9ecef}
-        .history-cost{font-size:12px;font-weight:600;color:#e17055}.history-nic{font-size:12px;font-weight:600;color:#6c5ce7}
-        .history-delete-btn{padding:4px 10px;border:none;border-radius:6px;background:#ff7675;color:#fff;font-size:11px;font-weight:600;cursor:pointer}
-        .clear-history-btn{display:block;width:100%;padding:12px;border:2px solid #ff7675;border-radius:12px;background:transparent;color:#d63031;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px}.clear-history-btn:active{background:#ff7675;color:#fff}
-        .sale-form-group{margin-bottom:14px;position:relative}.sale-form-label{font-size:13px;font-weight:600;color:#2d3436;margin-bottom:6px;display:block}
-        .sale-form-input{width:100%;padding:12px 14px;border:2px solid #e9ecef;border-radius:10px;font-size:16px;font-weight:500;color:#2d3436;background:#f8f9fa;-webkit-appearance:none;transition:all 0.2s}
-        .sale-form-input:focus{outline:none;border-color:#5f27cd;background:#fff;box-shadow:0 0 0 3px rgba(95,39,205,0.1)}
-        .sale-toggle-group{display:flex;gap:8px}
-        .sale-toggle-btn{flex:1;padding:12px;border:2px solid #e9ecef;border-radius:10px;background:#f8f9fa;font-size:13px;font-weight:600;color:#636e72;cursor:pointer;text-align:center;transition:all 0.2s}
-        .sale-toggle-btn.active-regular{border-color:#00b894;background:#d4f5e9;color:#00b894}
-        .sale-toggle-btn.active-vip{border-color:#6c5ce7;background:#ede7ff;color:#6c5ce7}
-        .sale-toggle-btn.active-100{border-color:#0984e3;background:#e3f2fd;color:#0984e3}
-        .sale-toggle-btn.active-500{border-color:#e17055;background:#fde8e3;color:#e17055}
-        .sale-auto-price{margin-top:8px;padding:10px 14px;background:#f1f2f6;border-radius:8px;font-size:12px;color:#636e72;display:flex;justify-content:space-between}.sale-auto-price .sap-val{font-weight:700;color:#2d3436}
-        .sale-item{padding:14px 16px;background:#f8f9fa;border-radius:12px;margin-bottom:8px;border:1px solid #e9ecef}
-        .sale-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}.sale-customer{font-size:14px;font-weight:700}.sale-date-info{font-size:11px;color:#636e72}
-        .sale-badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
-        .sale-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px}
-        .sale-badge.regular{background:#d4f5e9;color:#00b894}.sale-badge.vip{background:#ede7ff;color:#6c5ce7}.sale-badge.size-100{background:#e3f2fd;color:#0984e3}.sale-badge.size-500{background:#fde8e3;color:#e17055}
-        .sale-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid #e9ecef}
-        .sale-amount{font-size:16px;font-weight:700;color:#00b894}.sale-delete-btn{padding:4px 10px;border:none;border-radius:6px;background:#ff7675;color:#fff;font-size:11px;font-weight:600;cursor:pointer}
-        .sales-filter{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-        .filter-btn{padding:6px 14px;border:2px solid #e9ecef;border-radius:8px;background:#f8f9fa;font-size:11px;font-weight:600;color:#636e72;cursor:pointer;transition:all 0.2s}
-        .filter-btn.active{border-color:#5f27cd;background:#ede7ff;color:#5f27cd}
-        .autocomplete-list{position:absolute;top:100%;left:0;right:0;z-index:50;background:#fff;border:2px solid #e9ecef;border-top:none;border-radius:0 0 10px 10px;max-height:180px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.1);display:none}
-        .autocomplete-list.show{display:block}
-        .autocomplete-item{padding:12px 14px;font-size:14px;font-weight:500;color:#2d3436;cursor:pointer;border-bottom:1px solid #f1f2f6;display:flex;justify-content:space-between;align-items:center}
-        .autocomplete-item:last-child{border-bottom:none}.autocomplete-item:active{background:#f0f8ff}
-        .autocomplete-item .ac-tags{display:flex;gap:4px}.autocomplete-item .ac-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
-        .ac-tag.regular{background:#d4f5e9;color:#00b894}.ac-tag.vip{background:#ede7ff;color:#6c5ce7}
-        .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-        .summary-box{padding:14px;border-radius:12px;text-align:center}
-        .summary-box .sb-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;opacity:0.7;margin-bottom:4px}.summary-box .sb-value{font-size:22px;font-weight:700}.summary-box .sb-sub{font-size:11px;opacity:0.6;margin-top:2px}
-        .summary-box.revenue{background:linear-gradient(135deg,#55efc4,#00b894)}.summary-box.revenue *{color:#004d3a}
-        .summary-box.cost-sum{background:linear-gradient(135deg,#ffeaa7,#fdcb6e)}.summary-box.cost-sum *{color:#6c5200}
-        .summary-box.profit-sum{background:linear-gradient(135deg,#a29bfe,#6c5ce7)}.summary-box.profit-sum *{color:#fff}
-        .summary-box.bottles-sum{background:linear-gradient(135deg,#fab1a0,#e17055)}.summary-box.bottles-sum *{color:#5a1a00}
-        .summary-table{width:100%;border-collapse:collapse;margin-top:12px}
-        .summary-table th{font-size:11px;font-weight:700;text-transform:uppercase;color:#636e72;padding:8px 6px;border-bottom:2px solid #e9ecef;text-align:left}
-        .summary-table td{font-size:13px;font-weight:500;padding:10px 6px;border-bottom:1px solid #f1f2f6}.summary-table td.val{font-weight:700;text-align:right}
-        .customer-summary-item{padding:12px 14px;background:#f8f9fa;border-radius:10px;margin-bottom:8px;border:1px solid #e9ecef}
-        .cs-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}.cs-name{font-size:14px;font-weight:700}.cs-total{font-size:16px;font-weight:700;color:#00b894}
-        .cs-details{font-size:11px;color:#636e72;display:flex;gap:12px}
-        .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:500;justify-content:center;align-items:center;padding:24px}.modal-overlay.show{display:flex}
-        .modal-box{background:#fff;border-radius:20px;padding:28px 24px;max-width:340px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);animation:modalPop 0.3s ease}
-        @keyframes modalPop{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
-        .modal-icon{font-size:48px;margin-bottom:12px}.modal-title{font-size:18px;font-weight:700;margin-bottom:8px}.modal-message{font-size:13px;color:#636e72;line-height:1.5;margin-bottom:20px}.modal-message strong{color:#2d3436}
-        .modal-details{background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:20px;text-align:left}.modal-detail-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#636e72}.modal-detail-row .mdv{font-weight:600;color:#2d3436}
-        .modal-buttons{display:flex;gap:10px}.modal-btn{flex:1;padding:14px;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
-        .modal-btn.cancel{background:#dfe6e9;color:#636e72}.modal-btn.confirm{background:linear-gradient(135deg,#e17055,#fab1a0);color:#fff}
-        .modal-btn.confirm-green{background:linear-gradient(135deg,#00b894,#55efc4);color:#004d3a}.modal-btn:active{transform:scale(0.97)}
-        .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#2d3436;color:#fff;padding:12px 24px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:all 0.3s;z-index:200;pointer-events:none;white-space:nowrap;max-width:90%}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-        .backup-info{font-size:11px;color:#636e72;text-align:center;margin-top:8px;line-height:1.4}.backup-info strong{color:#2d3436}
+        .ri{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#f8f9fa;border-radius:12px;margin-bottom:8px;border:1px solid #e9ecef}
+        .ri .ri-i{flex:1}.ri .ri-n{font-size:14px;font-weight:600}.ri .ri-d{font-size:11px;color:#636e72;margin-top:2px}
+        .ri .ri-a{display:flex;gap:6px}
+        .ra{padding:8px 12px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer}
+        .ra.load{background:#0984e3;color:#fff}.ra.del{background:#ff7675;color:#fff}.ra:active{transform:scale(.95)}
+        .sra{display:flex;gap:8px;margin-bottom:16px}
+        .sra input{flex:1;padding:12px 14px;border:2px solid #e9ecef;border-radius:10px;font-size:14px;font-weight:500;background:#f8f9fa;-webkit-appearance:none}
+        .sra input:focus{outline:0;border-color:#6c5ce7;background:#fff}
+        .srb{padding:12px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#6c5ce7,#a29bfe);color:#fff;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+        .es{text-align:center;padding:30px 20px;color:#b2bec3}.es .ei{font-size:40px;margin-bottom:8px}.es .et{font-size:14px;font-weight:500}
+        .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+        .sb{background:#fff;border-radius:12px;padding:12px 8px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.04)}
+        .sb .sl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#636e72;margin-bottom:4px}.sb .sv{font-size:18px;font-weight:700;color:#2d3436}.sb .ss{font-size:10px;color:#b2bec3;margin-top:2px}
+        .hi{padding:14px 16px;background:#f8f9fa;border-radius:12px;margin-bottom:8px;border:1px solid #e9ecef}
+        .hi-t{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}.hi-d{font-size:13px;font-weight:700}.hi-tm{font-size:11px;color:#636e72}
+        .hi-sz{font-size:14px;font-weight:700;color:#0984e3;background:#e3f2fd;padding:3px 10px;border-radius:6px}
+        .hi-dt{display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px;color:#636e72}.hi-dt span{display:flex;justify-content:space-between}.hi-dt .v{font-weight:600;color:#2d3436}
+        .hi-b{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid #e9ecef}
+        .hi-c{font-size:12px;font-weight:600;color:#e17055}.hi-n{font-size:12px;font-weight:600;color:#6c5ce7}
+        .hi-x{padding:4px 10px;border:none;border-radius:6px;background:#ff7675;color:#fff;font-size:11px;font-weight:600;cursor:pointer}
+        .sfg{margin-bottom:14px;position:relative}.sfl{font-size:13px;font-weight:600;color:#2d3436;margin-bottom:6px;display:block}
+        .sfi{width:100%;padding:12px 14px;border:2px solid #e9ecef;border-radius:10px;font-size:16px;font-weight:500;color:#2d3436;background:#f8f9fa;-webkit-appearance:none;transition:all .2s}
+        .sfi:focus{outline:0;border-color:#5f27cd;background:#fff;box-shadow:0 0 0 3px rgba(95,39,205,.1)}
+        .stg{display:flex;gap:8px}
+        .stb{flex:1;padding:12px;border:2px solid #e9ecef;border-radius:10px;background:#f8f9fa;font-size:13px;font-weight:600;color:#636e72;cursor:pointer;text-align:center;transition:all .2s}
+        .stb.ar{border-color:#00b894;background:#d4f5e9;color:#00b894}
+        .stb.av{border-color:#6c5ce7;background:#ede7ff;color:#6c5ce7}
+        .stb.a1{border-color:#0984e3;background:#e3f2fd;color:#0984e3}
+        .stb.a5{border-color:#e17055;background:#fde8e3;color:#e17055}
+        .sap{margin-top:8px;padding:10px 14px;background:#f1f2f6;border-radius:8px;font-size:12px;color:#636e72;display:flex;justify-content:space-between}.sap .sv{font-weight:700;color:#2d3436}
+        .sli{padding:14px 16px;background:#f8f9fa;border-radius:12px;margin-bottom:8px;border:1px solid #e9ecef}
+        .sli-t{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}.sli-c{font-size:14px;font-weight:700}.sli-di{font-size:11px;color:#636e72}
+        .sli-bg{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+        .badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px}
+        .badge.reg{background:#d4f5e9;color:#00b894}.badge.vip{background:#ede7ff;color:#6c5ce7}.badge.s1{background:#e3f2fd;color:#0984e3}.badge.s5{background:#fde8e3;color:#e17055}
+        .sli-b{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid #e9ecef}
+        .sli-a{font-size:16px;font-weight:700;color:#00b894}
+        .sli-x{padding:4px 10px;border:none;border-radius:6px;background:#ff7675;color:#fff;font-size:11px;font-weight:600;cursor:pointer}
+        .sf{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+        .fb{padding:6px 14px;border:2px solid #e9ecef;border-radius:8px;background:#f8f9fa;font-size:11px;font-weight:600;color:#636e72;cursor:pointer;transition:all .2s}
+        .fb.active{border-color:#5f27cd;background:#ede7ff;color:#5f27cd}
+        .acl{position:absolute;top:100%;left:0;right:0;z-index:50;background:#fff;border:2px solid #e9ecef;border-top:none;border-radius:0 0 10px 10px;max-height:180px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.1);display:none}
+        .acl.show{display:block}
+        .aci{padding:12px 14px;font-size:14px;font-weight:500;color:#2d3436;cursor:pointer;border-bottom:1px solid #f1f2f6;display:flex;justify-content:space-between;align-items:center}
+        .aci:last-child{border-bottom:none}.aci:active{background:#f0f8ff}
+        .sumg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+        .sumb{padding:14px;border-radius:12px;text-align:center}
+        .sumb .sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-bottom:4px}.sumb .sv{font-size:22px;font-weight:700}.sumb .ss{font-size:11px;opacity:.6;margin-top:2px}
+        .sumb.rev{background:linear-gradient(135deg,#55efc4,#00b894)}.sumb.rev *{color:#004d3a}
+        .sumb.cst{background:linear-gradient(135deg,#ffeaa7,#fdcb6e)}.sumb.cst *{color:#6c5200}
+        .sumb.prf{background:linear-gradient(135deg,#a29bfe,#6c5ce7)}.sumb.prf *{color:#fff}
+        .sumb.bts{background:linear-gradient(135deg,#fab1a0,#e17055)}.sumb.bts *{color:#5a1a00}
+        .stbl{width:100%;border-collapse:collapse;margin-top:12px}
+        .stbl th{font-size:11px;font-weight:700;text-transform:uppercase;color:#636e72;padding:8px 6px;border-bottom:2px solid #e9ecef;text-align:left}
+        .stbl td{font-size:13px;font-weight:500;padding:10px 6px;border-bottom:1px solid #f1f2f6}.stbl td.vl{font-weight:700;text-align:right}
+        .csi{padding:12px 14px;background:#f8f9fa;border-radius:10px;margin-bottom:8px;border:1px solid #e9ecef}
+        .csi-t{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}.csi-n{font-size:14px;font-weight:700}.csi-v{font-size:16px;font-weight:700;color:#00b894}
+        .csi-d{font-size:11px;color:#636e72;display:flex;gap:12px}
+        .mo{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:500;justify-content:center;align-items:center;padding:24px}.mo.show{display:flex}
+        .mb{background:#fff;border-radius:20px;padding:28px 24px;max-width:340px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.15);animation:mp .3s ease}
+        @keyframes mp{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+        .mb .mi{font-size:48px;margin-bottom:12px}.mb .mt{font-size:18px;font-weight:700;margin-bottom:8px}.mb .mm{font-size:13px;color:#636e72;line-height:1.5;margin-bottom:20px}.mb .mm strong{color:#2d3436}
+        .md{background:#f8f9fa;border-radius:10px;padding:12px;margin-bottom:20px;text-align:left}
+        .mdr{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#636e72}.mdr .mv{font-weight:600;color:#2d3436}
+        .mbs{display:flex;gap:10px}.mbn{flex:1;padding:14px;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer}
+        .mbn.cancel{background:#dfe6e9;color:#636e72}.mbn.confirm{background:linear-gradient(135deg,#e17055,#fab1a0);color:#fff}
+        .mbn.cg{background:linear-gradient(135deg,#00b894,#55efc4);color:#004d3a}.mbn:active{transform:scale(.97)}
+        .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#2d3436;color:#fff;padding:12px 24px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;z-index:200;pointer-events:none;white-space:nowrap;max-width:90%}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+        .bkinfo{font-size:11px;color:#636e72;text-align:center;margin-top:8px;line-height:1.4}.bkinfo strong{color:#2d3436}
         #importFileInput{display:none}
+        .debug-log{background:#f8f9fa;border-radius:10px;padding:12px;margin-top:12px;font-family:monospace;font-size:10px;color:#636e72;max-height:200px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
     </style>
 </head>
 <body>
@@ -171,9 +173,10 @@
     <div class="sync-bar">
         <span class="sync-dot online" id="syncDot"></span>
         <span class="sync-status" id="syncStatus">Ready</span>
-        <button class="sync-btn" id="syncBtn" onclick="manualSync()">↻ Sync</button>
+        <button class="sync-btn" onclick="manualSync()">↻ Sync</button>
     </div>
 </div>
+
 <div class="tab-bar">
     <button class="tab-btn active" onclick="switchTab('calc',this)"><span class="tab-icon">🧪</span>Calc</button>
     <button class="tab-btn" onclick="switchTab('profit',this)"><span class="tab-icon">💰</span>Profit</button>
@@ -184,6 +187,7 @@
     <button class="tab-btn" onclick="switchTab('backup',this)"><span class="tab-icon">💾</span>Backup</button>
 </div>
 
+<!-- CALC -->
 <div class="tab-content active" id="tab-calc">
     <div class="card">
         <div class="batch-scaler"><div class="batch-scaler-label">🎯 Scale to Batch Size</div><div class="batch-scaler-row"><input type="number" inputmode="decimal" id="batchScaler" placeholder="e.g. 1000" step="any" oninput="scaleBatch(this.value)"><span class="scaler-unit">ml</span></div><div class="batch-scaler-presets"><button class="preset-btn" onclick="setPreset(100)">100</button><button class="preset-btn" onclick="setPreset(250)">250</button><button class="preset-btn" onclick="setPreset(500)">500</button><button class="preset-btn" onclick="setPreset(1000)">1000</button><button class="preset-btn" onclick="setPreset(2941.1)">Full</button></div></div>
@@ -193,83 +197,93 @@
         <div class="input-group" data-key="pg"><div class="input-label"><span>PG</span><span class="ratio">10.31%</span></div><div class="input-row"><div class="input-wrapper"><input type="number" inputmode="decimal" placeholder="0.00" step="any" oninput="calcIng('pg',this.value)"></div><div class="unit-toggle" data-ingredient="pg"><button class="active" onclick="setUnit('pg','ml',this)">ml</button><button onclick="setUnit('pg','g',this)">g</button></div></div></div>
         <div class="input-group" data-key="vg"><div class="input-label"><span>VG</span><span class="ratio">69.07%</span></div><div class="input-row"><div class="input-wrapper"><input type="number" inputmode="decimal" placeholder="0.00" step="any" oninput="calcIng('vg',this.value)"></div><div class="unit-toggle" data-ingredient="vg"><button class="active" onclick="setUnit('vg','ml',this)">ml</button><button onclick="setUnit('vg','g',this)">g</button></div></div></div>
         <div class="total-bar"><span class="label">Total</span><span class="value" id="totalBatch">0.0 ml</span></div>
-        <div class="nic-strength-bar"><span class="label">⚡ Nicotine</span><span class="value" id="nicStrength">0.00 mg/ml</span></div>
+        <div class="nic-bar"><span class="label">⚡ Nicotine</span><span class="value" id="nicStrength">0.00 mg/ml</span></div>
         <div class="vg-pg-bar"><div class="vg-fill" id="vgBar" style="width:70%"></div><div class="pg-fill" id="pgBar" style="width:30%"></div></div>
-        <div class="ratio-labels"><span class="vg-label" id="vgPercent">VG 70.0%</span><span class="pg-label" id="pgPercent">PG 30.0%</span></div>
+        <div class="ratio-labels"><span class="vg-l" id="vgPct">VG 70.0%</span><span class="pg-l" id="pgPct">PG 30.0%</span></div>
     </div>
-    <button class="reset-btn" onclick="resetAll()">🔄 Reset</button>
-    <button class="log-batch-btn" id="logBatchBtn" style="display:none" onclick="showLogConfirm()">📜 Log Batch</button>
-    <button class="deduct-btn" id="deductBtn" style="display:none" onclick="showDeductConfirm()">📦 Deduct Supplies</button>
+    <button class="btn btn-reset" onclick="resetAll()">🔄 Reset</button>
+    <button class="btn btn-log" id="logBtn" style="display:none" onclick="showLogConfirm()">📜 Log Batch</button>
+    <button class="btn btn-deduct" id="dedBtn" style="display:none" onclick="showDedConfirm()">📦 Deduct Supplies</button>
 </div>
 
+<!-- PROFIT -->
 <div class="tab-content" id="tab-profit">
-    <div class="card"><div class="card-title green"><span>💰</span> Cost</div><div class="profit-grid"><div class="profit-box cost"><div class="box-label">Total</div><div class="box-value" id="totalCost">0₪</div><div class="box-sub" id="costPer100">0/100ml</div></div><div class="profit-box bottles"><div class="box-label">Bottles</div><div class="box-value" id="bottleCount">0</div><div class="box-sub" id="leftover">0ml left</div></div></div></div>
-    <div class="card"><div class="card-title purple"><span>📊</span> Profit</div><div class="profit-grid"><div class="profit-box regular"><div class="box-label">Regular 60₪</div><div class="box-value" id="profitRegular">0₪</div><div class="box-sub" id="revenueRegular">Rev: 0₪</div></div><div class="profit-box vip"><div class="box-label">VIP 45₪</div><div class="box-value" id="profitVip">0₪</div><div class="box-sub" id="revenueVip">Rev: 0₪</div></div></div><div class="profit-section-title">Per Bottle</div><div class="profit-grid"><div class="profit-box cost"><div class="box-label">Cost</div><div class="box-value" id="costPerBottle">0₪</div></div><div class="profit-box regular"><div class="box-label">Margin</div><div class="box-value" id="marginRegular">0%</div><div class="box-sub" id="profitPerRegular">0₪/btl</div></div></div></div>
+    <div class="card"><div class="card-title green"><span>💰</span> Cost</div><div class="profit-grid"><div class="pbox cost"><div class="bl">Total</div><div class="bv" id="tCost">0₪</div><div class="bs" id="c100">0/100ml</div></div><div class="pbox btl"><div class="bl">Bottles</div><div class="bv" id="bCnt">0</div><div class="bs" id="bLeft">0ml left</div></div></div></div>
+    <div class="card"><div class="card-title purple"><span>📊</span> Profit</div><div class="profit-grid"><div class="pbox reg"><div class="bl">Regular 60₪</div><div class="bv" id="pReg">0₪</div><div class="bs" id="rReg">Rev:0₪</div></div><div class="pbox vip"><div class="bl">VIP 45₪</div><div class="bv" id="pVip">0₪</div><div class="bs" id="rVip">Rev:0₪</div></div></div><div class="pst">Per Bottle</div><div class="profit-grid"><div class="pbox cost"><div class="bl">Cost</div><div class="bv" id="cBtl">0₪</div></div><div class="pbox reg"><div class="bl">Margin</div><div class="bv" id="mReg">0%</div><div class="bs" id="ppReg">0₪/btl</div></div></div></div>
 </div>
 
+<!-- SUPPLY -->
 <div class="tab-content" id="tab-supply">
-    <div id="supplyWarning"></div>
-    <div class="max-batch-card"><div class="mbl">Max Batch</div><div class="mbv" id="maxBatchValue">0 ml</div><div class="mbs" id="maxBatchLimiter">No supplies</div></div>
+    <div id="supWarn"></div>
+    <div class="mbc"><div class="ml">Max Batch</div><div class="mv" id="maxBV">0ml</div><div class="ms" id="maxBL">—</div></div>
     <div class="card"><div class="card-title orange"><span>📦</span> Stock</div>
-        <div class="supply-item"><div class="supply-header"><span class="supply-name">PG100 Nic</span><span class="supply-stock good" id="nicStockLabel">0ml</span></div><div class="supply-bar-bg"><div class="supply-bar-fill good" id="nicBar" style="width:0%"></div></div><div class="supply-details"><span id="nicBatches">0ml</span><span>500ml</span></div><div class="supply-input-row"><input type="number" inputmode="decimal" placeholder="Stock" id="supplyNic" oninput="updateSupply()"><div class="unit-toggle" data-supply-unit="nic"><button class="active" onclick="setSU('nic','ml',this)">ml</button><button onclick="setSU('nic','g',this)">g</button></div></div></div>
-        <div class="supply-item"><div class="supply-header"><span class="supply-name">HRQ Shot</span><span class="supply-stock good" id="hrqStockLabel">0ml</span></div><div class="supply-bar-bg"><div class="supply-bar-fill good" id="hrqBar" style="width:0%"></div></div><div class="supply-details"><span id="hrqBatches">0ml</span><span>500ml</span></div><div class="supply-input-row"><input type="number" inputmode="decimal" placeholder="Stock" id="supplyHrq" oninput="updateSupply()"><div class="unit-toggle" data-supply-unit="hrq"><button class="active" onclick="setSU('hrq','ml',this)">ml</button><button onclick="setSU('hrq','g',this)">g</button></div></div></div>
-        <div class="supply-item"><div class="supply-header"><span class="supply-name">PG</span><span class="supply-stock good" id="pgStockLabel">0ml</span></div><div class="supply-bar-bg"><div class="supply-bar-fill good" id="pgBar2" style="width:0%"></div></div><div class="supply-details"><span id="pgBatches">0ml</span><span>≈4826ml</span></div><div class="supply-input-row"><input type="number" inputmode="decimal" placeholder="Stock" id="supplyPg" oninput="updateSupply()"><div class="unit-toggle" data-supply-unit="pg"><button class="active" onclick="setSU('pg','ml',this)">ml</button><button onclick="setSU('pg','g',this)">g</button></div></div></div>
-        <div class="supply-item"><div class="supply-header"><span class="supply-name">VG</span><span class="supply-stock good" id="vgStockLabel">0ml</span></div><div class="supply-bar-bg"><div class="supply-bar-fill good" id="vgBar2" style="width:0%"></div></div><div class="supply-details"><span id="vgBatches">0ml</span><span>≈4758ml</span></div><div class="supply-input-row"><input type="number" inputmode="decimal" placeholder="Stock" id="supplyVg" oninput="updateSupply()"><div class="unit-toggle" data-supply-unit="vg"><button class="active" onclick="setSU('vg','ml',this)">ml</button><button onclick="setSU('vg','g',this)">g</button></div></div></div>
+        <div class="si"><div class="si-h"><span class="si-n">PG100 Nic</span><span class="si-s good" id="nicSL">0ml</span></div><div class="si-bg"><div class="si-f good" id="nicBr" style="width:0%"></div></div><div class="si-d"><span id="nicBt">0ml</span><span>500ml</span></div><div class="si-r"><input type="number" inputmode="decimal" placeholder="Stock" id="supNic" oninput="updateSupply()"><div class="unit-toggle" data-supply-unit="nic"><button class="active" onclick="setSU('nic','ml',this)">ml</button><button onclick="setSU('nic','g',this)">g</button></div></div></div>
+        <div class="si"><div class="si-h"><span class="si-n">HRQ Shot</span><span class="si-s good" id="hrqSL">0ml</span></div><div class="si-bg"><div class="si-f good" id="hrqBr" style="width:0%"></div></div><div class="si-d"><span id="hrqBt">0ml</span><span>500ml</span></div><div class="si-r"><input type="number" inputmode="decimal" placeholder="Stock" id="supHrq" oninput="updateSupply()"><div class="unit-toggle" data-supply-unit="hrq"><button class="active" onclick="setSU('hrq','ml',this)">ml</button><button onclick="setSU('hrq','g',this)">g</button></div></div></div>
+        <div class="si"><div class="si-h"><span class="si-n">PG</span><span class="si-s good" id="pgSL">0ml</span></div><div class="si-bg"><div class="si-f good" id="pgBr" style="width:0%"></div></div><div class="si-d"><span id="pgBt">0ml</span><span>≈4826ml</span></div><div class="si-r"><input type="number" inputmode="decimal" placeholder="Stock" id="supPg" oninput="updateSupply()"><div class="unit-toggle" data-supply-unit="pg"><button class="active" onclick="setSU('pg','ml',this)">ml</button><button onclick="setSU('pg','g',this)">g</button></div></div></div>
+        <div class="si"><div class="si-h"><span class="si-n">VG</span><span class="si-s good" id="vgSL">0ml</span></div><div class="si-bg"><div class="si-f good" id="vgBr" style="width:0%"></div></div><div class="si-d"><span id="vgBt">0ml</span><span>≈4758ml</span></div><div class="si-r"><input type="number" inputmode="decimal" placeholder="Stock" id="supVg" oninput="updateSupply()"><div class="unit-toggle" data-supply-unit="vg"><button class="active" onclick="setSU('vg','ml',this)">ml</button><button onclick="setSU('vg','g',this)">g</button></div></div></div>
     </div>
-    <button class="save-btn" onclick="saveSupply()">💾 Save Stock</button>
+    <button class="btn btn-save" onclick="saveSup()">💾 Save Stock</button>
 </div>
 
-<div class="tab-content" id="tab-recipes"><div class="card"><div class="card-title purple"><span>📋</span> Save Recipe</div><div class="save-recipe-area"><input type="text" id="recipeNameInput" placeholder="Name..."><button class="save-recipe-btn" onclick="saveRecipe()">💾</button></div></div><div class="card"><div class="card-title teal"><span>📂</span> Recipes</div><div id="recipeList"><div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">No recipes</div></div></div></div></div>
+<!-- RECIPES -->
+<div class="tab-content" id="tab-recipes"><div class="card"><div class="card-title purple"><span>📋</span> Save Recipe</div><div class="sra"><input type="text" id="recName" placeholder="Name..."><button class="srb" onclick="saveRec()">💾</button></div></div><div class="card"><div class="card-title teal"><span>📂</span> Recipes</div><div id="recList"><div class="es"><div class="ei">📋</div><div class="et">No recipes</div></div></div></div></div>
 
-<div class="tab-content" id="tab-history"><div class="history-stats"><div class="stat-box"><div class="stat-label">Batches</div><div class="stat-value" id="statBatches">0</div></div><div class="stat-box"><div class="stat-label">Mixed</div><div class="stat-value" id="statTotalMl">0</div><div class="stat-sub">ml</div></div><div class="stat-box"><div class="stat-label">Cost</div><div class="stat-value" id="statTotalCost">0</div><div class="stat-sub">₪</div></div></div><div class="card"><div class="card-title pink"><span>📜</span> Log</div><div id="historyList"><div class="empty-state"><div class="empty-icon">📜</div><div class="empty-text">No batches</div></div></div></div><button class="clear-history-btn" id="clearHistoryBtn" style="display:none" onclick="showClear('history')">🗑️ Clear</button></div>
+<!-- HISTORY -->
+<div class="tab-content" id="tab-history"><div class="stats"><div class="sb"><div class="sl">Batches</div><div class="sv" id="stB">0</div></div><div class="sb"><div class="sl">Mixed</div><div class="sv" id="stM">0</div><div class="ss">ml</div></div><div class="sb"><div class="sl">Cost</div><div class="sv" id="stC">0</div><div class="ss">₪</div></div></div><div class="card"><div class="card-title pink"><span>📜</span> Log</div><div id="hisList"><div class="es"><div class="ei">📜</div><div class="et">No batches</div></div></div></div><button class="btn-clear" id="clrHis" style="display:none" onclick="showClr('history')">🗑️ Clear</button></div>
 
+<!-- SALES -->
 <div class="tab-content" id="tab-sales">
-    <div class="sales-stats"><div class="stat-box"><div class="stat-label">Sales</div><div class="stat-value" id="statSalesCount">0</div></div><div class="stat-box"><div class="stat-label">Revenue</div><div class="stat-value" id="statSalesRevenue">0</div><div class="stat-sub">₪</div></div><div class="stat-box"><div class="stat-label">Bottles</div><div class="stat-value" id="statBottlesSold">0</div></div></div>
+    <div class="stats"><div class="sb"><div class="sl">Sales</div><div class="sv" id="stSC">0</div></div><div class="sb"><div class="sl">Revenue</div><div class="sv" id="stSR">0</div><div class="ss">₪</div></div><div class="sb"><div class="sl">Bottles</div><div class="sv" id="stSB">0</div></div></div>
     <div class="card"><div class="card-title indigo"><span>🛒</span> New Sale</div>
-        <div class="sale-form-group"><label class="sale-form-label">Customer</label><input type="text" class="sale-form-input" id="saleCustomer" placeholder="Name..." autocomplete="off" oninput="onCustIn()" onfocus="onCustIn()"><div class="autocomplete-list" id="acList"></div></div>
-        <div class="sale-form-group"><label class="sale-form-label">Type</label><div class="sale-toggle-group"><button class="sale-toggle-btn" id="btnReg" onclick="setSTgl('type','regular')">🏷️ Regular</button><button class="sale-toggle-btn" id="btnVip" onclick="setSTgl('type','vip')">⭐ VIP</button></div></div>
-        <div class="sale-form-group"><label class="sale-form-label">Size</label><div class="sale-toggle-group"><button class="sale-toggle-btn" id="btn100" onclick="setSTgl('size','100')">100ml</button><button class="sale-toggle-btn" id="btn500" onclick="setSTgl('size','500')">500ml</button></div></div>
-        <div class="sale-form-group"><label class="sale-form-label">Qty</label><input type="number" class="sale-form-input" id="saleQty" value="1" min="1" oninput="updSP()"></div>
-        <div class="sale-auto-price"><span>Suggested</span><span class="sap-val" id="saleSugPrice">60₪</span></div>
-        <div class="sale-form-group" style="margin-top:12px"><label class="sale-form-label">Paid (₪)</label><input type="number" class="sale-form-input" id="salePaid" placeholder="60" inputmode="decimal" onfocus="this.dataset.auto='false'"></div>
-        <button class="add-sale-btn" onclick="addSale()">🛒 Record</button>
+        <div class="sfg"><label class="sfl">Customer</label><input type="text" class="sfi" id="saleCust" placeholder="Name..." autocomplete="off" oninput="onCI()" onfocus="onCI()"><div class="acl" id="acL"></div></div>
+        <div class="sfg"><label class="sfl">Type</label><div class="stg"><button class="stb" id="bReg" onclick="setTgl('type','regular')">🏷️ Regular</button><button class="stb" id="bVip" onclick="setTgl('type','vip')">⭐ VIP</button></div></div>
+        <div class="sfg"><label class="sfl">Size</label><div class="stg"><button class="stb" id="b100" onclick="setTgl('size','100')">100ml</button><button class="stb" id="b500" onclick="setTgl('size','500')">500ml</button></div></div>
+        <div class="sfg"><label class="sfl">Qty</label><input type="number" class="sfi" id="saleQty" value="1" min="1" oninput="updSP()"></div>
+        <div class="sap"><span>Suggested</span><span class="sv" id="sugP">60₪</span></div>
+        <div class="sfg" style="margin-top:12px"><label class="sfl">Paid (₪)</label><input type="number" class="sfi" id="salePd" placeholder="60" inputmode="decimal" onfocus="this.dataset.auto='false'"></div>
+        <button class="btn btn-sale" onclick="addSale()">🛒 Record</button>
     </div>
-    <div class="card"><div class="card-title green"><span>📊</span> Summary</div><div class="summary-grid"><div class="summary-box revenue"><div class="sb-label">Revenue</div><div class="sb-value" id="sumRev">0₪</div></div><div class="summary-box cost-sum"><div class="sb-label">Est.Cost</div><div class="sb-value" id="sumCost">0₪</div></div><div class="summary-box profit-sum"><div class="sb-label">Profit</div><div class="sb-value" id="sumProfit">0₪</div><div class="sb-sub" id="sumMargin">0%</div></div><div class="summary-box bottles-sum"><div class="sb-label">ML</div><div class="sb-value" id="sumMl">0</div><div class="sb-sub" id="sumBtl">0 btl</div></div></div>
-        <div class="profit-section-title">By Type</div><table class="summary-table"><tr><th>Type</th><th>#</th><th>ML</th><th style="text-align:right">Rev</th></tr><tr><td>🏷️Reg</td><td id="sRC">0</td><td id="sRM">0</td><td class="val" id="sRR">0₪</td></tr><tr><td>⭐VIP</td><td id="sVC">0</td><td id="sVM">0</td><td class="val" id="sVR">0₪</td></tr></table>
-        <div class="profit-section-title">By Size</div><table class="summary-table"><tr><th>Size</th><th>#</th><th>Qty</th><th style="text-align:right">Rev</th></tr><tr><td>100ml</td><td id="s1C">0</td><td id="s1Q">0</td><td class="val" id="s1R">0₪</td></tr><tr><td>500ml</td><td id="s5C">0</td><td id="s5Q">0</td><td class="val" id="s5R">0₪</td></tr></table>
-        <div class="profit-section-title">Top Customers</div><div id="topCust"></div>
+    <div class="card"><div class="card-title green"><span>📊</span> Summary</div>
+        <div class="sumg"><div class="sumb rev"><div class="sl">Revenue</div><div class="sv" id="smRv">0₪</div></div><div class="sumb cst"><div class="sl">Est.Cost</div><div class="sv" id="smCs">0₪</div></div><div class="sumb prf"><div class="sl">Profit</div><div class="sv" id="smPr">0₪</div><div class="ss" id="smMg">0%</div></div><div class="sumb bts"><div class="sl">ML</div><div class="sv" id="smMl">0</div><div class="ss" id="smBt">0btl</div></div></div>
+        <div class="pst">By Type</div><table class="stbl"><tr><th>Type</th><th>#</th><th>ML</th><th style="text-align:right">Rev</th></tr><tr><td>🏷️Reg</td><td id="sRC">0</td><td id="sRM">0</td><td class="vl" id="sRR">0₪</td></tr><tr><td>⭐VIP</td><td id="sVC">0</td><td id="sVM">0</td><td class="vl" id="sVR">0₪</td></tr></table>
+        <div class="pst">By Size</div><table class="stbl"><tr><th>Size</th><th>#</th><th>Qty</th><th style="text-align:right">Rev</th></tr><tr><td>100ml</td><td id="s1C">0</td><td id="s1Q">0</td><td class="vl" id="s1R">0₪</td></tr><tr><td>500ml</td><td id="s5C">0</td><td id="s5Q">0</td><td class="vl" id="s5R">0₪</td></tr></table>
+        <div class="pst">Top Customers</div><div id="topC"></div>
     </div>
-    <div class="card"><div class="card-title teal"><span>📋</span> History</div><div class="sales-filter"><button class="filter-btn active" onclick="setSF('all',this)">All</button><button class="filter-btn" onclick="setSF('regular',this)">Reg</button><button class="filter-btn" onclick="setSF('vip',this)">VIP</button><button class="filter-btn" onclick="setSF('100',this)">100</button><button class="filter-btn" onclick="setSF('500',this)">500</button></div><div id="salesList"><div class="empty-state"><div class="empty-icon">🛒</div><div class="empty-text">No sales</div></div></div></div>
-    <button class="clear-history-btn" id="clearSalesBtn" style="display:none" onclick="showClear('sales')">🗑️ Clear Sales</button>
+    <div class="card"><div class="card-title teal"><span>📋</span> History</div><div class="sf"><button class="fb active" onclick="setSF('all',this)">All</button><button class="fb" onclick="setSF('regular',this)">Reg</button><button class="fb" onclick="setSF('vip',this)">VIP</button><button class="fb" onclick="setSF('100',this)">100</button><button class="fb" onclick="setSF('500',this)">500</button></div><div id="salList"><div class="es"><div class="ei">🛒</div><div class="et">No sales</div></div></div></div>
+    <button class="btn-clear" id="clrSal" style="display:none" onclick="showClr('sales')">🗑️ Clear Sales</button>
 </div>
 
+<!-- BACKUP -->
 <div class="tab-content" id="tab-backup">
     <div class="card"><div class="card-title green"><span>☁️</span> Cloud Sync</div>
-        <div class="backup-info" style="margin-bottom:12px">Your data syncs to <strong>Google Sheets</strong> automatically. Last sync: <strong id="lastSyncLabel">Never</strong></div>
-        <button class="backup-btn export" onclick="manualSync()">☁️ Sync Now</button>
-        <button class="backup-btn import" style="margin-top:8px" onclick="forcePullFromCloud()">📥 Pull from Cloud</button>
+        <div class="bkinfo" style="margin-bottom:12px">Data syncs to <strong>Google Sheets</strong>. Last sync: <strong id="lastSyncLbl">Never</strong></div>
+        <button class="btn btn-sync" onclick="manualSync()">☁️ Sync Now</button>
+        <button class="btn btn-pull" onclick="forcePull()">📥 Force Pull from Cloud</button>
+        <div class="bkinfo" style="margin-top:12px">Sync debug log:</div>
+        <div class="debug-log" id="debugLog">Waiting...</div>
     </div>
     <div class="card"><div class="card-title blue"><span>💾</span> File Backup</div>
-        <button class="backup-btn export" onclick="exportFile()">📤 Export File</button>
-        <button class="backup-btn import" style="margin-top:8px" onclick="document.getElementById('importFileInput').click()">📥 Import File</button>
+        <button class="btn btn-export" onclick="exportFile()">📤 Export File</button>
+        <button class="btn btn-import" onclick="document.getElementById('importFileInput').click()">📥 Import File</button>
         <input type="file" id="importFileInput" accept=".json" onchange="importFile(event)">
     </div>
     <div class="card"><div class="card-title orange"><span>📊</span> Data</div>
-        <table class="summary-table">
-            <tr><td>📦 Supply</td><td class="val" id="bkSup">—</td></tr>
-            <tr><td>📋 Recipes</td><td class="val" id="bkRec">0</td></tr>
-            <tr><td>📜 Batches</td><td class="val" id="bkHis">0</td></tr>
-            <tr><td>🛒 Sales</td><td class="val" id="bkSal">0</td></tr>
-            <tr><td>👥 Customers</td><td class="val" id="bkCus">0</td></tr>
+        <table class="stbl">
+            <tr><td>📦 Supply</td><td class="vl" id="bkS">—</td></tr>
+            <tr><td>📋 Recipes</td><td class="vl" id="bkR">0</td></tr>
+            <tr><td>📜 Batches</td><td class="vl" id="bkH">0</td></tr>
+            <tr><td>🛒 Sales</td><td class="vl" id="bkSa">0</td></tr>
+            <tr><td>👥 Customers</td><td class="vl" id="bkC">0</td></tr>
+            <tr><td>🕐 Local timestamp</td><td class="vl" id="bkTs">0</td></tr>
         </table>
     </div>
 </div>
 
-<div class="modal-overlay" id="modalOverlay" onclick="clMod(event)"><div class="modal-box"><div class="modal-icon" id="mIcon">📦</div><div class="modal-title" id="mTitle"></div><div class="modal-message" id="mMsg"></div><div class="modal-details" id="mDet" style="display:none"></div><div class="modal-buttons"><button class="modal-btn cancel" onclick="hMod()">Cancel</button><button class="modal-btn confirm" id="mBtn">OK</button></div></div></div>
+<div class="mo" id="mo" onclick="if(event.target===this)hM()"><div class="mb"><div class="mi" id="mI">📦</div><div class="mt" id="mT"></div><div class="mm" id="mM"></div><div class="md" id="mD" style="display:none"></div><div class="mbs"><button class="mbn cancel" onclick="hM()">Cancel</button><button class="mbn confirm" id="mB">OK</button></div></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
-// === CONFIG ===
+// CONFIG
 const API='https://script.google.com/macros/s/AKfycbwuDY9iXBf2wiDyoYRae_9scD8mt22wAxKc-JPcH7It-MX1NKv0YtPDqTB26k0xPUNfuQ/exec';
 const NIC_MG=100,BASE={nic:88.2,hrq:500,pg:294.1,vg:2058.8},TML=BASE.nic+BASE.hrq+BASE.pg+BASE.vg;
 const R={};for(let k in BASE)R[k]=BASE[k]/TML;
@@ -279,672 +293,259 @@ const FS={nic:500,hrq:500,pg:5000/1.036,vg:6000/1.261};
 const NM={nic:'PG100 Nic',hrq:'HRQ',pg:'PG',vg:'VG'};
 const PR={regular:{100:60,500:300},vip:{100:45,500:225}};
 
-// State
-const U={nic:'ml',hrq:'ml',pg:'ml',vg:'ml'},SU={nic:'ml',hrq:'ml',pg:'ml',vg:'ml'},V={nic:0,hrq:0,pg:0,vg:0};
+const U={nic:'ml',hrq:'ml',pg:'ml',vg:'ml'},SU_={nic:'ml',hrq:'ml',pg:'ml',vg:'ml'},V={nic:0,hrq:0,pg:0,vg:0};
 let cT=0,sup=ld('juiceSupply',{nic:0,hrq:0,pg:0,vg:0}),rec=ld('juiceRecipes',[]),his=ld('juiceHistory',[]),sal=ld('juiceSales',[]),cust=ld('juiceCustomers',{}),sTyp='regular',sSiz='100',sFilt='all',syncing=false;
 
 function ld(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}}
 function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
 
-// === TIMESTAMP TRACKING ===
-function getLocalTimestamp(){
-    return ld('juiceSyncTimestamp', 0);
-}
-
-function setLocalTimestamp(ts){
-    if(!ts) ts = Date.now();
-    sv('juiceSyncTimestamp', ts);
-    return ts;
-}
-
-function markLocalChanged(){
-    const ts = Date.now();
-    setLocalTimestamp(ts);
-    return ts;
-}
-
-// === SYNC ENGINE ===
-function setSyncUI(state, msg){
-    const dot=document.getElementById('syncDot'), st=document.getElementById('syncStatus');
-    dot.className='sync-dot '+state;
-    st.textContent=msg;
-}
-
-function getAllLocalData(){
-    return {
-        supply: sup,
-        recipes: rec,
-        history: his,
-        sales: sal,
-        customers: cust,
-        salePrefs: {type: sTyp, size: sSiz},
-        _timestamp: getLocalTimestamp()
-    };
-}
-
-function applyCloudData(d){
-    if(d.supply){sup = d.supply; sv('juiceSupply', sup)}
-    if(d.recipes){rec = d.recipes; sv('juiceRecipes', rec)}
-    if(d.history){his = d.history; sv('juiceHistory', his)}
-    if(d.sales){sal = d.sales; sv('juiceSales', sal)}
-    if(d.customers){cust = d.customers; sv('juiceCustomers', cust)}
-    if(d.salePrefs){
-        sTyp = d.salePrefs.type || 'regular';
-        sSiz = d.salePrefs.size || '100';
-        sv('juiceSalePrefs', d.salePrefs);
+// DEBUG
+function dbg(msg){
+    console.log('[SYNC]',msg);
+    const el=document.getElementById('debugLog');
+    if(el){
+        const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+        el.textContent=time+': '+msg+'\n'+el.textContent;
+        if(el.textContent.length>2000)el.textContent=el.textContent.substring(0,2000);
     }
-    if(d._timestamp){
-        setLocalTimestamp(d._timestamp);
-    }
+}
+
+// TIMESTAMPS
+function getTS(){return ld('juiceSyncTs',0)}
+function setTS(t){if(!t)t=Date.now();sv('juiceSyncTs',t);return t}
+function markChanged(){const t=Date.now();setTS(t);dbg('Local changed, ts='+t);return t}
+
+// SYNC
+function setSyncUI(state,msg){
+    document.getElementById('syncDot').className='sync-dot '+state;
+    document.getElementById('syncStatus').textContent=msg;
+}
+
+function getAll(){
+    return{supply:sup,recipes:rec,history:his,sales:sal,customers:cust,salePrefs:{type:sTyp,size:sSiz},_timestamp:getTS()};
+}
+
+function applyCloud(d){
+    dbg('Applying cloud data...');
+    if(d.supply){sup=d.supply;sv('juiceSupply',sup)}
+    if(d.recipes){rec=d.recipes;sv('juiceRecipes',rec)}
+    if(d.history){his=d.history;sv('juiceHistory',his)}
+    if(d.sales){sal=d.sales;sv('juiceSales',sal)}
+    if(d.customers){cust=d.customers;sv('juiceCustomers',cust)}
+    if(d.salePrefs){sTyp=d.salePrefs.type||'regular';sSiz=d.salePrefs.size||'100';sv('juiceSalePrefs',d.salePrefs)}
+    if(d._timestamp)setTS(d._timestamp);
     refreshAll();
+    dbg('Cloud data applied!');
 }
 
-async function pushToCloud(){
-    if(syncing) return;
-    syncing = true;
-    setSyncUI('syncing', 'Pushing...');
-    try {
-        const data = getAllLocalData();
-        const res = await fetch(API + '?action=writeAll', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {'Content-Type': 'text/plain'}
-        });
-        const json = await res.json();
-        if(json.status === 'ok'){
-            sv('juiceLastSync', new Date().toISOString());
-            setSyncUI('online', 'Synced ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}));
-        } else {
-            setSyncUI('offline', 'Push failed');
+async function pushCloud(){
+    if(syncing)return;
+    syncing=true;setSyncUI('syncing','Pushing...');
+    dbg('Pushing to cloud...');
+    try{
+        const data=getAll();
+        dbg('Push data ts='+data._timestamp+', sales='+data.sales.length);
+        const res=await fetch(API+'?action=writeAll',{method:'POST',body:JSON.stringify(data)});
+        const txt=await res.text();
+        dbg('Push response: '+txt.substring(0,100));
+        const json=JSON.parse(txt);
+        if(json.status==='ok'){
+            sv('juiceLastSync',new Date().toISOString());
+            setSyncUI('online','Synced '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}));
+            dbg('Push OK!');
+        }else{
+            setSyncUI('offline','Push error');
+            dbg('Push error: '+JSON.stringify(json));
         }
-    } catch(e){
-        setSyncUI('offline', 'Offline');
+    }catch(e){
+        setSyncUI('offline','Offline');
+        dbg('Push exception: '+e.message);
     }
-    syncing = false;
+    syncing=false;
 }
 
-async function pullFromCloud(silent){
-    if(syncing) return null;
-    syncing = true;
-    if(!silent) setSyncUI('syncing', 'Pulling...');
-    try {
-        const res = await fetch(API + '?action=readAll');
-        const json = await res.json();
-        syncing = false;
+async function pullCloud(silent){
+    if(syncing)return null;
+    syncing=true;
+    if(!silent)setSyncUI('syncing','Pulling...');
+    dbg('Pulling from cloud...');
+    try{
+        const res=await fetch(API+'?action=readAll');
+        const txt=await res.text();
+        dbg('Pull response: '+txt.substring(0,200));
+        const json=JSON.parse(txt);
+        syncing=false;
         if(json.data){
+            dbg('Pull OK, cloud ts='+json.data._timestamp+', sales='+(json.data.sales?json.data.sales.length:'null'));
             return json.data;
         }
+        dbg('Pull: no data in response');
         return null;
-    } catch(e){
-        syncing = false;
-        if(!silent) setSyncUI('offline', 'Pull failed');
+    }catch(e){
+        syncing=false;
+        dbg('Pull exception: '+e.message);
+        if(!silent)setSyncUI('offline','Pull failed');
         return null;
     }
 }
 
 async function smartSync(){
-    setSyncUI('syncing', 'Checking...');
-
-    const cloudData = await pullFromCloud(true);
-
-    if(!cloudData){
-        // No cloud data or offline
-        const hasLocal = rec.length || his.length || sal.length || (sup.nic+sup.hrq+sup.pg+sup.vg > 0);
+    setSyncUI('syncing','Checking...');
+    dbg('=== Smart Sync Start ===');
+    
+    const cloud=await pullCloud(true);
+    
+    if(!cloud){
+        dbg('No cloud data received');
+        const hasLocal=rec.length||his.length||sal.length||(sup.nic+sup.hrq+sup.pg+sup.vg>0);
         if(hasLocal){
-            // Push local to cloud
-            await pushToCloud();
-        } else {
-            setSyncUI('online', 'No data yet');
+            dbg('Has local data, pushing...');
+            await pushCloud();
+        }else{
+            setSyncUI('online','No data yet');
+            dbg('No data anywhere');
         }
         return;
     }
-
-    const localTs = getLocalTimestamp();
-    const cloudTs = cloudData._timestamp || 0;
-
-    if(cloudTs === 0 && localTs === 0){
-        // Both empty, nothing to do
-        setSyncUI('online', 'Ready');
-        return;
+    
+    const localTs=getTS();
+    const cloudTs=cloud._timestamp||0;
+    
+    dbg('Local ts: '+localTs);
+    dbg('Cloud ts: '+cloudTs);
+    dbg('Diff: '+(localTs-cloudTs)+'ms');
+    
+    if(cloudTs>localTs){
+        dbg('>>> CLOUD IS NEWER — loading cloud data');
+        applyCloud(cloud);
+        setSyncUI('online','☁️ Updated from cloud');
+        toast('☁️ Newer data loaded from cloud');
+    }else if(localTs>cloudTs){
+        dbg('>>> LOCAL IS NEWER — pushing to cloud');
+        await pushCloud();
+    }else{
+        setSyncUI('online','In sync ✓');
+        dbg('>>> IN SYNC (same timestamp)');
     }
-
-    if(cloudTs > localTs){
-        // Cloud is newer — apply it
-        console.log('Cloud is newer:', cloudTs, '>', localTs);
-        applyCloudData(cloudData);
-        setSyncUI('online', '☁️ Loaded latest');
-        showToast('☁️ Newer data loaded from cloud');
-    } else if(localTs > cloudTs){
-        // Local is newer — push to cloud
-        console.log('Local is newer:', localTs, '>', cloudTs);
-        await pushToCloud();
-    } else {
-        // Same timestamp — in sync
-        setSyncUI('online', 'In sync ✓');
-    }
+    dbg('=== Smart Sync End ===');
 }
 
 async function manualSync(){
     await smartSync();
-    showToast('☁️ Sync complete!');
+    toast('☁️ Sync done!');
 }
 
-async function forcePullFromCloud(){
-    setSyncUI('syncing', 'Force pulling...');
-    const cloudData = await pullFromCloud(false);
-    if(cloudData){
-        applyCloudData(cloudData);
-        setSyncUI('online', '☁️ Pulled!');
-        showToast('☁️ Data loaded from cloud!');
-    } else {
-        setSyncUI('offline', 'No cloud data');
-        showToast('❌ No data on cloud');
+async function forcePull(){
+    setSyncUI('syncing','Force pulling...');
+    dbg('=== FORCE PULL ===');
+    const cloud=await pullCloud(false);
+    if(cloud){
+        applyCloud(cloud);
+        setSyncUI('online','☁️ Pulled!');
+        toast('☁️ Loaded from cloud!');
+    }else{
+        setSyncUI('offline','Nothing on cloud');
+        toast('❌ No cloud data');
     }
 }
 
-function debouncedPush(){
-    clearTimeout(window._syncTimer);
-    window._syncTimer = setTimeout(() => pushToCloud(), 3000);
-}
+function debouncedPush(){clearTimeout(window._pt);window._pt=setTimeout(()=>pushCloud(),3000)}
+function dataChanged(){markChanged();debouncedPush()}
 
-// Called after any data change
-function dataChanged(){
-    markLocalChanged();
-    debouncedPush();
-}
+function refreshAll(){populateSI();updateSupply();renderRec();renderHis();restoreSP();updSP();renderSal();updSum();updBk()}
 
-function refreshAll(){
-    populateSI();
-    updateSupply();
-    renderRec();
-    renderHis();
-    restoreSP();
-    updSP();
-    renderSal();
-    updSum();
-    updBkInfo();
-}
-
-// === TABS ===
+// TABS
 function switchTab(id,btn){
     document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.getElementById('tab-'+id).classList.add('active');
-    btn.classList.add('active');
+    document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');
     if(id==='supply'){populateSI();updateSupply()}
     if(id==='profit')updTot(cT);
     if(id==='recipes')renderRec();
     if(id==='history')renderHis();
     if(id==='sales'){restoreSP();updSP();renderSal();updSum()}
-    if(id==='backup')updBkInfo();
+    if(id==='backup')updBk();
 }
 
-// === CALC ===
+// CALC
 function gI(k){return document.querySelector(`[data-key="${k}"] input`)}
 function m2d(k,m){return U[k]==='g'?m*DN[k]:m}
 function d2m(k,v){return U[k]==='g'?v/DN[k]:v}
-function aB(t,s){
-    for(let k in R) V[k]=t*R[k];
-    for(let k in R){
-        if(k===s)continue;
-        const i=gI(k),d=m2d(k,V[k]);
-        i.value=d>0?d.toFixed(2):'';
-        i.classList.add('calculated');
-    }
-    if(s&&s!=='batch') gI(s).classList.remove('calculated');
-    else for(let k in R){gI(k).value=m2d(k,V[k]).toFixed(2);gI(k).classList.add('calculated')}
-    cT=t;updTot(t);
-    const sh=t>0?'block':'none';
-    document.getElementById('deductBtn').style.display=sh;
-    document.getElementById('logBatchBtn').style.display=sh;
-}
+function aB(t,s){for(let k in R)V[k]=t*R[k];for(let k in R){if(k===s)continue;const i=gI(k),d=m2d(k,V[k]);i.value=d>0?d.toFixed(2):'';i.classList.add('calculated')}if(s&&s!=='batch')gI(s).classList.remove('calculated');else for(let k in R){gI(k).value=m2d(k,V[k]).toFixed(2);gI(k).classList.add('calculated')}cT=t;updTot(t);const sh=t>0?'block':'none';document.getElementById('dedBtn').style.display=sh;document.getElementById('logBtn').style.display=sh}
 function setPreset(v){document.getElementById('batchScaler').value=v;scaleBatch(v)}
-function scaleBatch(r){
-    const t=parseFloat(r)||0;aB(t,'batch');
-    document.querySelectorAll('.preset-btn').forEach(b=>{
-        const p=parseFloat(b.textContent);
-        b.classList.toggle('active',Math.abs(p-t)<1||(b.textContent==='Full'&&Math.abs(t-TML)<1));
-    });
-}
-function calcIng(s,r){
-    const v=parseFloat(r)||0,m=d2m(s,v),t=R[s]>0?m/R[s]:0;
-    document.getElementById('batchScaler').value=t>0?t.toFixed(1):'';
-    document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
-    aB(t,s);
-}
+function scaleBatch(r){const t=parseFloat(r)||0;aB(t,'batch');document.querySelectorAll('.preset-btn').forEach(b=>{const p=parseFloat(b.textContent);b.classList.toggle('active',Math.abs(p-t)<1||(b.textContent==='Full'&&Math.abs(t-TML)<1))})}
+function calcIng(s,r){const v=parseFloat(r)||0,m=d2m(s,v),t=R[s]>0?m/R[s]:0;document.getElementById('batchScaler').value=t>0?t.toFixed(1):'';document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));aB(t,s)}
 function gC(){let c=0;for(let k in V)c+=V[k]*CPM[k];return c}
 function gCPM(){let c=0;for(let k in R)c+=R[k]*CPM[k];return c}
 function updTot(t){
     document.getElementById('totalBatch').textContent=t.toFixed(1)+' ml';
-    const nm=t>0?(NIC_MG*V.nic)/t:0;
-    document.getElementById('nicStrength').textContent=nm.toFixed(2)+' mg/ml';
+    const nm=t>0?(NIC_MG*V.nic)/t:0;document.getElementById('nicStrength').textContent=nm.toFixed(2)+' mg/ml';
     const pT=V.nic+V.hrq+V.pg,vT=V.vg,vP=t>0?vT/t*100:70,pP=t>0?pT/t*100:30;
-    document.getElementById('vgBar').style.width=vP+'%';
-    document.getElementById('pgBar').style.width=pP+'%';
-    document.getElementById('vgPercent').textContent='VG '+vP.toFixed(1)+'%';
-    document.getElementById('pgPercent').textContent='PG '+pP.toFixed(1)+'%';
+    document.getElementById('vgBar').style.width=vP+'%';document.getElementById('pgBar').style.width=pP+'%';
+    document.getElementById('vgPct').textContent='VG '+vP.toFixed(1)+'%';document.getElementById('pgPct').textContent='PG '+pP.toFixed(1)+'%';
     const c=gC(),c1=t>0?c/t*100:0;
-    document.getElementById('totalCost').textContent=c.toFixed(2)+'₪';
-    document.getElementById('costPer100').textContent=c1.toFixed(2)+'₪/100ml';
-    document.getElementById('costPerBottle').textContent=c1.toFixed(2)+'₪';
-    const b=Math.floor(t/100);
-    document.getElementById('bottleCount').textContent=b;
-    document.getElementById('leftover').textContent=(t-b*100).toFixed(1)+'ml';
-    const rR=b*60;
-    document.getElementById('revenueRegular').textContent='Rev:'+rR+'₪';
-    document.getElementById('profitRegular').textContent=(rR-c).toFixed(2)+'₪';
-    const rV=b*45;
-    document.getElementById('revenueVip').textContent='Rev:'+rV+'₪';
-    document.getElementById('profitVip').textContent=(rV-c).toFixed(2)+'₪';
-    const mg=c1>0?(60-c1)/60*100:0;
-    document.getElementById('marginRegular').textContent=mg.toFixed(1)+'%';
-    document.getElementById('profitPerRegular').textContent=(60-c1).toFixed(2)+'₪/btl';
+    document.getElementById('tCost').textContent=c.toFixed(2)+'₪';document.getElementById('c100').textContent=c1.toFixed(2)+'₪/100ml';document.getElementById('cBtl').textContent=c1.toFixed(2)+'₪';
+    const b=Math.floor(t/100);document.getElementById('bCnt').textContent=b;document.getElementById('bLeft').textContent=(t-b*100).toFixed(1)+'ml';
+    const rR=b*60;document.getElementById('rReg').textContent='Rev:'+rR+'₪';document.getElementById('pReg').textContent=(rR-c).toFixed(2)+'₪';
+    const rV=b*45;document.getElementById('rVip').textContent='Rev:'+rV+'₪';document.getElementById('pVip').textContent=(rV-c).toFixed(2)+'₪';
+    const mg=c1>0?(60-c1)/60*100:0;document.getElementById('mReg').textContent=mg.toFixed(1)+'%';document.getElementById('ppReg').textContent=(60-c1).toFixed(2)+'₪/btl';
 }
-function setUnit(k,u,b){
-    U[k]=u;
-    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    if(V[k]>0) gI(k).value=m2d(k,V[k]).toFixed(2);
-}
-function resetAll(){
-    for(let k in V){V[k]=0;const i=gI(k);i.value='';i.classList.remove('calculated')}
-    cT=0;document.getElementById('batchScaler').value='';
-    document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
-    updTot(0);
-    document.getElementById('deductBtn').style.display='none';
-    document.getElementById('logBatchBtn').style.display='none';
-    document.querySelectorAll('#tab-calc .unit-toggle').forEach(t=>{
-        const i=t.dataset.ingredient;
-        if(i){U[i]='ml';t.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===0))}
-    });
-}
+function setUnit(k,u,b){U[k]=u;b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(V[k]>0)gI(k).value=m2d(k,V[k]).toFixed(2)}
+function resetAll(){for(let k in V){V[k]=0;const i=gI(k);i.value='';i.classList.remove('calculated')}cT=0;document.getElementById('batchScaler').value='';document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));updTot(0);document.getElementById('dedBtn').style.display='none';document.getElementById('logBtn').style.display='none';document.querySelectorAll('#tab-calc .unit-toggle').forEach(t=>{const i=t.dataset.ingredient;if(i){U[i]='ml';t.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===0))}})}
 
-// === MODAL ===
-function sMod(ic,ti,ms,dt,bt,bc,fn){
-    document.getElementById('mIcon').textContent=ic;
-    document.getElementById('mTitle').textContent=ti;
-    document.getElementById('mMsg').innerHTML=ms;
-    const d=document.getElementById('mDet');
-    if(dt){d.innerHTML=dt;d.style.display='block'}else d.style.display='none';
-    const b=document.getElementById('mBtn');
-    b.textContent=bt;b.className='modal-btn '+(bc||'confirm');
-    b.onclick=()=>{hMod();fn()};
-    document.getElementById('modalOverlay').classList.add('show');
-}
-function hMod(){document.getElementById('modalOverlay').classList.remove('show')}
-function clMod(e){if(e.target===document.getElementById('modalOverlay'))hMod()}
+// MODAL
+function sM(ic,ti,ms,dt,bt,bc,fn){document.getElementById('mI').textContent=ic;document.getElementById('mT').textContent=ti;document.getElementById('mM').innerHTML=ms;const d=document.getElementById('mD');if(dt){d.innerHTML=dt;d.style.display='block'}else d.style.display='none';const b=document.getElementById('mB');b.textContent=bt;b.className='mbn '+(bc||'confirm');b.onclick=()=>{hM();fn()};document.getElementById('mo').classList.add('show')}
+function hM(){document.getElementById('mo').classList.remove('show')}
+function showDedConfirm(){if(cT<=0)return;sM('📦','Deduct?',`<strong>${cT.toFixed(0)}ml</strong>?`,`<div class="mdr"><span>Nic</span><span class="mv">-${V.nic.toFixed(1)}</span></div><div class="mdr"><span>HRQ</span><span class="mv">-${V.hrq.toFixed(1)}</span></div><div class="mdr"><span>PG</span><span class="mv">-${V.pg.toFixed(1)}</span></div><div class="mdr"><span>VG</span><span class="mv">-${V.vg.toFixed(1)}</span></div>`,'Deduct','confirm',()=>{sup.nic=Math.max(0,sup.nic-V.nic);sup.hrq=Math.max(0,sup.hrq-V.hrq);sup.pg=Math.max(0,sup.pg-V.pg);sup.vg=Math.max(0,sup.vg-V.vg);sv('juiceSupply',sup);toast('📦 Done!');populateSI();updateSupply();dataChanged()})}
+function showLogConfirm(){if(cT<=0)return;const c=gC();sM('📜','Log?',`<strong>${cT.toFixed(0)}ml</strong>`,`<div class="mdr"><span>Cost</span><span class="mv">${c.toFixed(2)}₪</span></div>`,'Log','cg',()=>{const n=new Date();his.unshift({id:Date.now(),date:n.toLocaleDateString(),time:n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),total:cT,values:{...V},cost:c,nicMg:cT>0?(NIC_MG*V.nic)/cT:0});sv('juiceHistory',his);toast('📜 Logged!');dataChanged()})}
+function showClr(ty){const a=ty==='history'?his:sal;sM('🗑️','Clear?',`Delete <strong>${a.length}</strong>?`,null,'Clear','confirm',()=>{if(ty==='history'){his=[];sv('juiceHistory',[]);renderHis()}else{sal=[];sv('juiceSales',[]);renderSal();updSum()}toast('🗑️ Done!');dataChanged()})}
 
-function showDeductConfirm(){
-    if(cT<=0)return;
-    sMod('📦','Deduct?',`<strong>${cT.toFixed(0)}ml</strong> from stock?`,
-        `<div class="modal-detail-row"><span>Nic</span><span class="mdv">-${V.nic.toFixed(1)}ml</span></div><div class="modal-detail-row"><span>HRQ</span><span class="mdv">-${V.hrq.toFixed(1)}ml</span></div><div class="modal-detail-row"><span>PG</span><span class="mdv">-${V.pg.toFixed(1)}ml</span></div><div class="modal-detail-row"><span>VG</span><span class="mdv">-${V.vg.toFixed(1)}ml</span></div>`,
-        'Deduct','confirm',()=>{
-            sup.nic=Math.max(0,sup.nic-V.nic);
-            sup.hrq=Math.max(0,sup.hrq-V.hrq);
-            sup.pg=Math.max(0,sup.pg-V.pg);
-            sup.vg=Math.max(0,sup.vg-V.vg);
-            sv('juiceSupply',sup);
-            showToast('📦 Done!');
-            populateSI();updateSupply();
-            dataChanged();
-        });
-}
+// SUPPLY
+function s2m(k){const id='sup'+k[0].toUpperCase()+k.slice(1);const v=parseFloat(document.getElementById(id).value)||0;return SU_[k]==='g'?v/DN[k]:v}
+function setSU(k,u,b){const id='sup'+k[0].toUpperCase()+k.slice(1);const i=document.getElementById(id);const m=s2m(k);SU_[k]=u;b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(m>0)i.value=(u==='g'?m*DN[k]:m).toFixed(1)}
+function populateSI(){['nic','hrq','pg','vg'].forEach(k=>{const id='sup'+k[0].toUpperCase()+k.slice(1);const m=sup[k],d=SU_[k]==='g'?m*DN[k]:m;document.getElementById(id).value=d>0?d.toFixed(1):''})}
+function updateSupply(){const c={nic:s2m('nic'),hrq:s2m('hrq'),pg:s2m('pg'),vg:s2m('vg')};let mn=Infinity,lm='';for(let k in R){const cm=c[k]/R[k];if(cm<mn){mn=cm;lm=k}}if(!isFinite(mn))mn=0;document.getElementById('maxBV').textContent=mn.toFixed(0)+'ml';document.getElementById('maxBL').textContent=mn>0?'Limited: '+NM[lm]:'—';const it=[{k:'nic',b:'nicBr',s:'nicSL',t:'nicBt'},{k:'hrq',b:'hrqBr',s:'hrqSL',t:'hrqBt'},{k:'pg',b:'pgBr',s:'pgSL',t:'pgBt'},{k:'vg',b:'vgBr',s:'vgSL',t:'vgBt'}];let w=false;it.forEach(i=>{const m=c[i.k],cm=m/R[i.k],p=Math.min(m/FS[i.k]*100,100);let st='good';if(cm<500){st='danger';w=true}else if(cm<1500)st='warning';document.getElementById(i.b).style.width=p+'%';document.getElementById(i.b).className='si-f '+st;const sl=document.getElementById(i.s);sl.textContent=m.toFixed(0)+'ml';sl.className='si-s '+st;document.getElementById(i.t).textContent=cm.toFixed(0)+'ml'});const wd=document.getElementById('supWarn'),any=c.nic+c.hrq+c.pg+c.vg;if(any>0&&mn<=0)wd.innerHTML='<div class="wb danger"><span class="wi">🚨</span><span>Empty!</span></div>';else if(mn>0&&mn<500)wd.innerHTML=`<div class="wb danger"><span class="wi">⚠️</span><span>Low! ${mn.toFixed(0)}ml</span></div>`;else if(mn>=500&&mn<1500)wd.innerHTML=`<div class="wb warning"><span class="wi">📋</span><span>${mn.toFixed(0)}ml left</span></div>`;else if(mn>=1500)wd.innerHTML=`<div class="wb good"><span class="wi">✅</span><span>${mn.toFixed(0)}ml</span></div>`;else wd.innerHTML='';document.getElementById('supplyBadge').classList.toggle('visible',w)}
+function saveSup(){sup.nic=s2m('nic');sup.hrq=s2m('hrq');sup.pg=s2m('pg');sup.vg=s2m('vg');sv('juiceSupply',sup);toast('✅ Saved!');updateSupply();dataChanged()}
 
-function showLogConfirm(){
-    if(cT<=0)return;
-    const c=gC();
-    sMod('📜','Log?',`<strong>${cT.toFixed(0)}ml</strong> batch`,
-        `<div class="modal-detail-row"><span>Cost</span><span class="mdv">${c.toFixed(2)}₪</span></div>`,
-        'Log','confirm-green',()=>{
-            const n=new Date();
-            his.unshift({id:Date.now(),date:n.toLocaleDateString(),time:n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),total:cT,values:{...V},cost:c,nicMg:cT>0?(NIC_MG*V.nic)/cT:0});
-            sv('juiceHistory',his);
-            showToast('📜 Logged!');
-            dataChanged();
-        });
-}
+// RECIPES
+function saveRec(){const n=document.getElementById('recName').value.trim();if(!n)return toast('❌ Name!');if(cT<=0)return toast('❌ Calc!');rec.push({id:Date.now(),name:n,values:{...V},total:cT,nicMg:(NIC_MG*V.nic)/cT,date:new Date().toLocaleDateString()});sv('juiceRecipes',rec);document.getElementById('recName').value='';renderRec();toast('✅!');dataChanged()}
+function loadRec(id){const r=rec.find(x=>x.id===id);if(!r)return;for(let k in r.values){V[k]=r.values[k];U[k]='ml'}cT=r.total;document.querySelectorAll('#tab-calc .unit-toggle').forEach(t=>{const i=t.dataset.ingredient;if(i){U[i]='ml';t.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===0))}});for(let k in V){const i=gI(k);i.value=V[k]>0?V[k].toFixed(2):'';i.classList.add('calculated')}document.getElementById('batchScaler').value=cT.toFixed(1);document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));updTot(cT);document.getElementById('dedBtn').style.display=cT>0?'block':'none';document.getElementById('logBtn').style.display=cT>0?'block':'none';document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-calc').classList.add('active');document.querySelectorAll('.tab-btn')[0].classList.add('active');toast('📋 Loaded!')}
+function delRec(id){rec=rec.filter(x=>x.id!==id);sv('juiceRecipes',rec);renderRec();toast('🗑️');dataChanged()}
+function renderRec(){const c=document.getElementById('recList');if(!rec.length)return c.innerHTML='<div class="es"><div class="ei">📋</div><div class="et">No recipes</div></div>';c.innerHTML=rec.map(r=>`<div class="ri"><div class="ri-i"><div class="ri-n">${r.name}</div><div class="ri-d">${r.total.toFixed(0)}ml·${(r.nicMg||0).toFixed(1)}mg·${r.date}</div></div><div class="ri-a"><button class="ra load" onclick="loadRec(${r.id})">Load</button><button class="ra del" onclick="delRec(${r.id})">🗑️</button></div></div>`).join('')}
 
-function showClear(ty){
-    const a=ty==='history'?his:sal;
-    sMod('🗑️','Clear?',`Delete <strong>${a.length}</strong> entries?`,null,'Clear','confirm',()=>{
-        if(ty==='history'){his=[];sv('juiceHistory',[]);renderHis()}
-        else{sal=[];sv('juiceSales',[]);renderSal();updSum()}
-        showToast('🗑️ Done!');
-        dataChanged();
-    });
-}
+// HISTORY
+function renderHis(){const c=document.getElementById('hisList'),cl=document.getElementById('clrHis');document.getElementById('stB').textContent=his.length;document.getElementById('stM').textContent=his.reduce((s,h)=>s+h.total,0).toFixed(0);document.getElementById('stC').textContent=his.reduce((s,h)=>s+h.cost,0).toFixed(0);if(!his.length){c.innerHTML='<div class="es"><div class="ei">📜</div><div class="et">No batches</div></div>';cl.style.display='none';return}cl.style.display='block';c.innerHTML=his.map(h=>`<div class="hi"><div class="hi-t"><div><div class="hi-d">${h.date}</div><div class="hi-tm">${h.time}</div></div><span class="hi-sz">${h.total.toFixed(0)}ml</span></div><div class="hi-dt"><span>Nic<span class="v">${h.values.nic.toFixed(1)}</span></span><span>HRQ<span class="v">${h.values.hrq.toFixed(1)}</span></span><span>PG<span class="v">${h.values.pg.toFixed(1)}</span></span><span>VG<span class="v">${h.values.vg.toFixed(1)}</span></span></div><div class="hi-b"><span class="hi-c">💰${h.cost.toFixed(2)}₪</span><span class="hi-n">⚡${(h.nicMg||0).toFixed(1)}mg</span><button class="hi-x" onclick="delHis(${h.id})">🗑️</button></div></div>`).join('')}
+function delHis(id){his=his.filter(h=>h.id!==id);sv('juiceHistory',his);renderHis();toast('🗑️');dataChanged()}
 
-// === SUPPLY ===
-function s2m(k){
-    const id='supply'+k[0].toUpperCase()+k.slice(1);
-    const v=parseFloat(document.getElementById(id).value)||0;
-    return SU[k]==='g'?v/DN[k]:v;
-}
-function setSU(k,u,b){
-    const id='supply'+k[0].toUpperCase()+k.slice(1);
-    const i=document.getElementById(id);
-    const m=s2m(k);
-    SU[k]=u;
-    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    if(m>0) i.value=(u==='g'?m*DN[k]:m).toFixed(1);
-}
-function populateSI(){
-    ['nic','hrq','pg','vg'].forEach(k=>{
-        const id='supply'+k[0].toUpperCase()+k.slice(1);
-        const m=sup[k],d=SU[k]==='g'?m*DN[k]:m;
-        document.getElementById(id).value=d>0?d.toFixed(1):'';
-    });
-}
-function updateSupply(){
-    const c={nic:s2m('nic'),hrq:s2m('hrq'),pg:s2m('pg'),vg:s2m('vg')};
-    let mn=Infinity,lm='';
-    for(let k in R){const cm=c[k]/R[k];if(cm<mn){mn=cm;lm=k}}
-    if(!isFinite(mn))mn=0;
-    document.getElementById('maxBatchValue').textContent=mn.toFixed(0)+'ml';
-    document.getElementById('maxBatchLimiter').textContent=mn>0?'Limited: '+NM[lm]:'—';
-    const it=[
-        {k:'nic',b:'nicBar',s:'nicStockLabel',t:'nicBatches'},
-        {k:'hrq',b:'hrqBar',s:'hrqStockLabel',t:'hrqBatches'},
-        {k:'pg',b:'pgBar2',s:'pgStockLabel',t:'pgBatches'},
-        {k:'vg',b:'vgBar2',s:'vgStockLabel',t:'vgBatches'}
-    ];
-    let w=false;
-    it.forEach(i=>{
-        const m=c[i.k],cm=m/R[i.k],p=Math.min(m/FS[i.k]*100,100);
-        let st='good';
-        if(cm<500){st='danger';w=true}else if(cm<1500)st='warning';
-        document.getElementById(i.b).style.width=p+'%';
-        document.getElementById(i.b).className='supply-bar-fill '+st;
-        const sl=document.getElementById(i.s);
-        sl.textContent=m.toFixed(0)+'ml';
-        sl.className='supply-stock '+st;
-        document.getElementById(i.t).textContent=cm.toFixed(0)+'ml';
-    });
-    const wd=document.getElementById('supplyWarning'),any=c.nic+c.hrq+c.pg+c.vg;
-    if(any>0&&mn<=0) wd.innerHTML='<div class="warning-banner danger"><span class="warn-icon">🚨</span><span>Empty!</span></div>';
-    else if(mn>0&&mn<500) wd.innerHTML=`<div class="warning-banner danger"><span class="warn-icon">⚠️</span><span>Low! ${mn.toFixed(0)}ml</span></div>`;
-    else if(mn>=500&&mn<1500) wd.innerHTML=`<div class="warning-banner warning"><span class="warn-icon">📋</span><span>${mn.toFixed(0)}ml left</span></div>`;
-    else if(mn>=1500) wd.innerHTML=`<div class="warning-banner good"><span class="warn-icon">✅</span><span>${mn.toFixed(0)}ml</span></div>`;
-    else wd.innerHTML='';
-    document.getElementById('supplyBadge').classList.toggle('visible',w);
-}
-function saveSupply(){
-    sup.nic=s2m('nic');sup.hrq=s2m('hrq');sup.pg=s2m('pg');sup.vg=s2m('vg');
-    sv('juiceSupply',sup);
-    showToast('✅ Saved!');
-    updateSupply();
-    dataChanged();
-}
+// SALES
+function restoreSP(){const p=ld('juiceSalePrefs',{type:'regular',size:'100'});sTyp=p.type;sSiz=p.size;document.getElementById('bReg').className='stb'+(sTyp==='regular'?' ar':'');document.getElementById('bVip').className='stb'+(sTyp==='vip'?' av':'');document.getElementById('b100').className='stb'+(sSiz==='100'?' a1':'');document.getElementById('b500').className='stb'+(sSiz==='500'?' a5':'')}
+function setTgl(w,v){if(w==='type'){sTyp=v;document.getElementById('bReg').className='stb'+(v==='regular'?' ar':'');document.getElementById('bVip').className='stb'+(v==='vip'?' av':'')}else{sSiz=v;document.getElementById('b100').className='stb'+(v==='100'?' a1':'');document.getElementById('b500').className='stb'+(v==='500'?' a5':'')}sv('juiceSalePrefs',{type:sTyp,size:sSiz});updSP()}
+function updSP(){const q=parseInt(document.getElementById('saleQty').value)||1,t=PR[sTyp][parseInt(sSiz)]*q;document.getElementById('sugP').textContent=t+'₪';const p=document.getElementById('salePd');if(!p.value||p.dataset.auto==='true'){p.value=t;p.dataset.auto='true'}}
+function onCI(){const v=document.getElementById('saleCust').value.trim().toLowerCase(),l=document.getElementById('acL');if(!v){l.classList.remove('show');return}const m=Object.keys(cust).filter(n=>n.toLowerCase().includes(v)).slice(0,5);if(!m.length){l.classList.remove('show');return}l.innerHTML=m.map(n=>`<div class="aci" onclick="selC('${n.replace(/'/g,"\\'")}')">${n}<span class="badge ${cust[n].type}" style="font-size:9px">${cust[n].type==='vip'?'⭐':'🏷️'}</span></div>`).join('');l.classList.add('show')}
+function selC(n){document.getElementById('saleCust').value=n;document.getElementById('acL').classList.remove('show');const c=cust[n];if(c){setTgl('type',c.type);setTgl('size',c.size)}updSP()}
+document.addEventListener('click',e=>{if(!e.target.closest('.sfg'))document.getElementById('acL').classList.remove('show')});
 
-// === RECIPES ===
-function saveRecipe(){
-    const n=document.getElementById('recipeNameInput').value.trim();
-    if(!n)return showToast('❌ Name!');
-    if(cT<=0)return showToast('❌ Calc!');
-    rec.push({id:Date.now(),name:n,values:{...V},total:cT,nicMg:(NIC_MG*V.nic)/cT,date:new Date().toLocaleDateString()});
-    sv('juiceRecipes',rec);
-    document.getElementById('recipeNameInput').value='';
-    renderRec();showToast('✅ Saved!');
-    dataChanged();
-}
-function loadRecipe(id){
-    const r=rec.find(x=>x.id===id);if(!r)return;
-    for(let k in r.values){V[k]=r.values[k];U[k]='ml'}
-    cT=r.total;
-    document.querySelectorAll('#tab-calc .unit-toggle').forEach(t=>{
-        const i=t.dataset.ingredient;
-        if(i){U[i]='ml';t.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===0))}
-    });
-    for(let k in V){const i=gI(k);i.value=V[k]>0?V[k].toFixed(2):'';i.classList.add('calculated')}
-    document.getElementById('batchScaler').value=cT.toFixed(1);
-    document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
-    updTot(cT);
-    document.getElementById('deductBtn').style.display=cT>0?'block':'none';
-    document.getElementById('logBatchBtn').style.display=cT>0?'block':'none';
-    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.getElementById('tab-calc').classList.add('active');
-    document.querySelectorAll('.tab-btn')[0].classList.add('active');
-    showToast('📋 Loaded!');
-}
-function deleteRecipe(id){
-    rec=rec.filter(x=>x.id!==id);
-    sv('juiceRecipes',rec);
-    renderRec();showToast('🗑️');
-    dataChanged();
-}
-function renderRec(){
-    const c=document.getElementById('recipeList');
-    if(!rec.length) return c.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">No recipes</div></div>';
-    c.innerHTML=rec.map(r=>`<div class="recipe-item"><div class="recipe-info"><div class="recipe-name">${r.name}</div><div class="recipe-detail">${r.total.toFixed(0)}ml·${(r.nicMg||0).toFixed(1)}mg·${r.date}</div></div><div class="recipe-actions"><button class="recipe-action-btn load" onclick="loadRecipe(${r.id})">Load</button><button class="recipe-action-btn delete" onclick="deleteRecipe(${r.id})">🗑️</button></div></div>`).join('');
-}
+function addSale(){const cu=document.getElementById('saleCust').value.trim();if(!cu)return toast('❌ Name!');const q=parseInt(document.getElementById('saleQty').value)||1,pa=parseFloat(document.getElementById('salePd').value)||0;if(pa<=0)return toast('❌ Amount!');const sz=parseInt(sSiz),sg=PR[sTyp][sz]*q,now=new Date();sal.unshift({id:Date.now(),customer:cu,type:sTyp,size:sz,qty:q,paid:pa,suggested:sg,date:now.toLocaleDateString(),time:now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),totalMl:sz*q});sv('juiceSales',sal);cust[cu]={type:sTyp,size:String(sz)};sv('juiceCustomers',cust);document.getElementById('saleCust').value='';document.getElementById('saleQty').value='1';document.getElementById('salePd').value='';document.getElementById('salePd').dataset.auto='true';updSP();renderSal();updSum();toast('🛒 '+cu+' '+pa+'₪');dataChanged()}
+function setSF(m,b){sFilt=m;document.querySelectorAll('.fb').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderSal()}
+function renderSal(){const c=document.getElementById('salList'),cl=document.getElementById('clrSal');let f=sal;if(sFilt==='regular')f=sal.filter(s=>s.type==='regular');else if(sFilt==='vip')f=sal.filter(s=>s.type==='vip');else if(sFilt==='100')f=sal.filter(s=>s.size===100);else if(sFilt==='500')f=sal.filter(s=>s.size===500);document.getElementById('stSC').textContent=sal.length;document.getElementById('stSR').textContent=sal.reduce((s,x)=>s+x.paid,0).toFixed(0);document.getElementById('stSB').textContent=sal.reduce((s,x)=>s+x.qty,0);if(!f.length){c.innerHTML='<div class="es"><div class="ei">🛒</div><div class="et">'+(sal.length?'No match':'No sales')+'</div></div>';cl.style.display=sal.length?'block':'none';return}cl.style.display='block';c.innerHTML=f.map(s=>{const d=s.paid<s.suggested?`<span style="font-size:11px;color:#d63031;font-weight:600;margin-left:4px">-${(s.suggested-s.paid).toFixed(0)}₪</span>`:'';return`<div class="sli"><div class="sli-t"><div><div class="sli-c">${s.customer}</div><div class="sli-di">${s.date}·${s.time}</div></div><div class="sli-bg"><span class="badge ${s.type}">${s.type==='vip'?'⭐':'🏷️'}</span><span class="badge s${s.size===100?'1':'5'}">${s.size}ml</span></div></div><div class="sli-b"><span class="sli-a">${s.paid.toFixed(0)}₪${d}</span><span style="font-size:11px;color:#636e72">${s.qty}×${s.size}ml</span><button class="sli-x" onclick="delSal(${s.id})">🗑️</button></div></div>`}).join('')}
+function delSal(id){sal=sal.filter(s=>s.id!==id);sv('juiceSales',sal);renderSal();updSum();toast('🗑️');dataChanged()}
+function updSum(){const tr=sal.reduce((s,x)=>s+x.paid,0),tm=sal.reduce((s,x)=>s+x.totalMl,0),tc=tm*gCPM(),pr=tr-tc,mg=tr>0?pr/tr*100:0,tb=sal.reduce((s,x)=>s+x.qty,0);document.getElementById('smRv').textContent=tr.toFixed(0)+'₪';document.getElementById('smCs').textContent=tc.toFixed(0)+'₪';document.getElementById('smPr').textContent=pr.toFixed(0)+'₪';document.getElementById('smMg').textContent=mg.toFixed(1)+'%';document.getElementById('smMl').textContent=tm;document.getElementById('smBt').textContent=tb+'btl';const rg=sal.filter(s=>s.type==='regular'),vi=sal.filter(s=>s.type==='vip');document.getElementById('sRC').textContent=rg.length;document.getElementById('sRM').textContent=rg.reduce((s,x)=>s+x.totalMl,0);document.getElementById('sRR').textContent=rg.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';document.getElementById('sVC').textContent=vi.length;document.getElementById('sVM').textContent=vi.reduce((s,x)=>s+x.totalMl,0);document.getElementById('sVR').textContent=vi.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';const s1=sal.filter(s=>s.size===100),s5=sal.filter(s=>s.size===500);document.getElementById('s1C').textContent=s1.length;document.getElementById('s1Q').textContent=s1.reduce((s,x)=>s+x.qty,0);document.getElementById('s1R').textContent=s1.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';document.getElementById('s5C').textContent=s5.length;document.getElementById('s5Q').textContent=s5.reduce((s,x)=>s+x.qty,0);document.getElementById('s5R').textContent=s5.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';const cm={};sal.forEach(s=>{if(!cm[s.customer])cm[s.customer]={paid:0,qty:0,ml:0,type:s.type};cm[s.customer].paid+=s.paid;cm[s.customer].qty+=s.qty;cm[s.customer].ml+=s.totalMl});const so=Object.entries(cm).sort((a,b)=>b[1].paid-a[1].paid).slice(0,10);document.getElementById('topC').innerHTML=so.length?so.map(([n,d])=>`<div class="csi"><div class="csi-t"><span class="csi-n">${n}</span><span class="csi-v">${d.paid.toFixed(0)}₪</span></div><div class="csi-d"><span>${d.qty}btl</span><span>${d.ml}ml</span><span class="badge ${d.type}" style="font-size:9px">${d.type==='vip'?'⭐':'🏷️'}</span></div></div>`).join(''):''}
 
-// === HISTORY ===
-function renderHis(){
-    const c=document.getElementById('historyList'),cl=document.getElementById('clearHistoryBtn');
-    document.getElementById('statBatches').textContent=his.length;
-    document.getElementById('statTotalMl').textContent=his.reduce((s,h)=>s+h.total,0).toFixed(0);
-    document.getElementById('statTotalCost').textContent=his.reduce((s,h)=>s+h.cost,0).toFixed(0);
-    if(!his.length){c.innerHTML='<div class="empty-state"><div class="empty-icon">📜</div><div class="empty-text">No batches</div></div>';cl.style.display='none';return}
-    cl.style.display='block';
-    c.innerHTML=his.map(h=>`<div class="history-item"><div class="history-top"><div><div class="history-date">${h.date}</div><div class="history-time">${h.time}</div></div><span class="history-batch-size">${h.total.toFixed(0)}ml</span></div><div class="history-details"><span>Nic<span class="val">${h.values.nic.toFixed(1)}</span></span><span>HRQ<span class="val">${h.values.hrq.toFixed(1)}</span></span><span>PG<span class="val">${h.values.pg.toFixed(1)}</span></span><span>VG<span class="val">${h.values.vg.toFixed(1)}</span></span></div><div class="history-bottom"><span class="history-cost">💰${h.cost.toFixed(2)}₪</span><span class="history-nic">⚡${(h.nicMg||0).toFixed(1)}mg</span><button class="history-delete-btn" onclick="delHis(${h.id})">🗑️</button></div></div>`).join('');
-}
-function delHis(id){
-    his=his.filter(h=>h.id!==id);
-    sv('juiceHistory',his);
-    renderHis();showToast('🗑️');
-    dataChanged();
-}
+// BACKUP
+function exportFile(){const data={version:2,exported:new Date().toISOString(),supply:sup,recipes:rec,history:his,sales:sal,customers:cust,salePrefs:{type:sTyp,size:sSiz},_timestamp:getTS()};const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='juice-'+new Date().toISOString().split('T')[0]+'.json';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);toast('📤 Exported!')}
+function importFile(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(e){try{const d=JSON.parse(e.target.result);if(!d.version)return toast('❌ Invalid!');sM('📥','Import?',`Replace with backup?`,null,'Import','cg',()=>{applyCloud(d);toast('✅ Imported!');dataChanged()})}catch{toast('❌ Invalid!')}};r.readAsText(f);ev.target.value=''}
+function updBk(){const ls=ld('juiceLastSync',null);document.getElementById('lastSyncLbl').textContent=ls?new Date(ls).toLocaleDateString()+' '+new Date(ls).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'Never';const a=sup.nic+sup.hrq+sup.pg+sup.vg;document.getElementById('bkS').textContent=a>0?'✅':'—';document.getElementById('bkR').textContent=rec.length;document.getElementById('bkH').textContent=his.length;document.getElementById('bkSa').textContent=sal.length;document.getElementById('bkC').textContent=Object.keys(cust).length;document.getElementById('bkTs').textContent=getTS()}
 
-// === SALES ===
-function restoreSP(){
-    const p=ld('juiceSalePrefs',{type:'regular',size:'100'});
-    sTyp=p.type;sSiz=p.size;
-    document.getElementById('btnReg').className='sale-toggle-btn'+(sTyp==='regular'?' active-regular':'');
-    document.getElementById('btnVip').className='sale-toggle-btn'+(sTyp==='vip'?' active-vip':'');
-    document.getElementById('btn100').className='sale-toggle-btn'+(sSiz==='100'?' active-100':'');
-    document.getElementById('btn500').className='sale-toggle-btn'+(sSiz==='500'?' active-500':'');
-}
-function setSTgl(w,v){
-    if(w==='type'){
-        sTyp=v;
-        document.getElementById('btnReg').className='sale-toggle-btn'+(v==='regular'?' active-regular':'');
-        document.getElementById('btnVip').className='sale-toggle-btn'+(v==='vip'?' active-vip':'');
-    } else {
-        sSiz=v;
-        document.getElementById('btn100').className='sale-toggle-btn'+(v==='100'?' active-100':'');
-        document.getElementById('btn500').className='sale-toggle-btn'+(v==='500'?' active-500':'');
-    }
-    sv('juiceSalePrefs',{type:sTyp,size:sSiz});
-    updSP();
-}
-function updSP(){
-    const q=parseInt(document.getElementById('saleQty').value)||1;
-    const t=PR[sTyp][parseInt(sSiz)]*q;
-    document.getElementById('saleSugPrice').textContent=t+'₪';
-    const p=document.getElementById('salePaid');
-    if(!p.value||p.dataset.auto==='true'){p.value=t;p.dataset.auto='true'}
-}
-function onCustIn(){
-    const v=document.getElementById('saleCustomer').value.trim().toLowerCase();
-    const l=document.getElementById('acList');
-    if(!v){l.classList.remove('show');return}
-    const m=Object.keys(cust).filter(n=>n.toLowerCase().includes(v)).slice(0,5);
-    if(!m.length){l.classList.remove('show');return}
-    l.innerHTML=m.map(n=>`<div class="autocomplete-item" onclick="selCust('${n.replace(/'/g,"\\'")}')">${n}<div class="ac-tags"><span class="ac-tag ${cust[n].type}">${cust[n].type==='vip'?'⭐':'🏷️'}</span></div></div>`).join('');
-    l.classList.add('show');
-}
-function selCust(n){
-    document.getElementById('saleCustomer').value=n;
-    document.getElementById('acList').classList.remove('show');
-    const c=cust[n];
-    if(c){setSTgl('type',c.type);setSTgl('size',c.size)}
-    updSP();
-}
-document.addEventListener('click',e=>{
-    if(!e.target.closest('.sale-form-group'))
-        document.getElementById('acList').classList.remove('show');
-});
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
 
-function addSale(){
-    const cu=document.getElementById('saleCustomer').value.trim();
-    if(!cu)return showToast('❌ Name!');
-    const q=parseInt(document.getElementById('saleQty').value)||1;
-    const pa=parseFloat(document.getElementById('salePaid').value)||0;
-    if(pa<=0)return showToast('❌ Amount!');
-    const sz=parseInt(sSiz),sg=PR[sTyp][sz]*q,now=new Date();
-    sal.unshift({
-        id:Date.now(),customer:cu,type:sTyp,size:sz,qty:q,paid:pa,suggested:sg,
-        date:now.toLocaleDateString(),
-        time:now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
-        totalMl:sz*q
-    });
-    sv('juiceSales',sal);
-    cust[cu]={type:sTyp,size:String(sz)};
-    sv('juiceCustomers',cust);
-    document.getElementById('saleCustomer').value='';
-    document.getElementById('saleQty').value='1';
-    document.getElementById('salePaid').value='';
-    document.getElementById('salePaid').dataset.auto='true';
-    updSP();renderSal();updSum();
-    showToast('🛒 '+cu+' '+pa+'₪');
-    dataChanged();
-}
-function setSF(m,b){
-    sFilt=m;
-    document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    renderSal();
-}
-function renderSal(){
-    const c=document.getElementById('salesList'),cl=document.getElementById('clearSalesBtn');
-    let f=sal;
-    if(sFilt==='regular')f=sal.filter(s=>s.type==='regular');
-    else if(sFilt==='vip')f=sal.filter(s=>s.type==='vip');
-    else if(sFilt==='100')f=sal.filter(s=>s.size===100);
-    else if(sFilt==='500')f=sal.filter(s=>s.size===500);
-    document.getElementById('statSalesCount').textContent=sal.length;
-    document.getElementById('statSalesRevenue').textContent=sal.reduce((s,x)=>s+x.paid,0).toFixed(0);
-    document.getElementById('statBottlesSold').textContent=sal.reduce((s,x)=>s+x.qty,0);
-    if(!f.length){
-        c.innerHTML='<div class="empty-state"><div class="empty-icon">🛒</div><div class="empty-text">'+(sal.length?'No match':'No sales')+'</div></div>';
-        cl.style.display=sal.length?'block':'none';return;
-    }
-    cl.style.display='block';
-    c.innerHTML=f.map(s=>{
-        const d=s.paid<s.suggested?`<span style="font-size:11px;color:#d63031;font-weight:600;margin-left:4px">-${(s.suggested-s.paid).toFixed(0)}₪</span>`:'';
-        return`<div class="sale-item"><div class="sale-top"><div><div class="sale-customer">${s.customer}</div><div class="sale-date-info">${s.date}·${s.time}</div></div><div class="sale-badges"><span class="sale-badge ${s.type}">${s.type==='vip'?'⭐':'🏷️'}</span><span class="sale-badge size-${s.size}">${s.size}ml</span></div></div><div class="sale-bottom"><span class="sale-amount">${s.paid.toFixed(0)}₪${d}</span><span style="font-size:11px;color:#636e72">${s.qty}×${s.size}ml</span><button class="sale-delete-btn" onclick="delSal(${s.id})">🗑️</button></div></div>`;
-    }).join('');
-}
-function delSal(id){
-    sal=sal.filter(s=>s.id!==id);
-    sv('juiceSales',sal);
-    renderSal();updSum();showToast('🗑️');
-    dataChanged();
-}
-function updSum(){
-    const tr=sal.reduce((s,x)=>s+x.paid,0),tm=sal.reduce((s,x)=>s+x.totalMl,0);
-    const tc=tm*gCPM(),pr=tr-tc,mg=tr>0?pr/tr*100:0,tb=sal.reduce((s,x)=>s+x.qty,0);
-    document.getElementById('sumRev').textContent=tr.toFixed(0)+'₪';
-    document.getElementById('sumCost').textContent=tc.toFixed(0)+'₪';
-    document.getElementById('sumProfit').textContent=pr.toFixed(0)+'₪';
-    document.getElementById('sumMargin').textContent=mg.toFixed(1)+'%';
-    document.getElementById('sumMl').textContent=tm;
-    document.getElementById('sumBtl').textContent=tb+'btl';
-    const rg=sal.filter(s=>s.type==='regular'),vi=sal.filter(s=>s.type==='vip');
-    document.getElementById('sRC').textContent=rg.length;
-    document.getElementById('sRM').textContent=rg.reduce((s,x)=>s+x.totalMl,0);
-    document.getElementById('sRR').textContent=rg.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';
-    document.getElementById('sVC').textContent=vi.length;
-    document.getElementById('sVM').textContent=vi.reduce((s,x)=>s+x.totalMl,0);
-    document.getElementById('sVR').textContent=vi.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';
-    const s1=sal.filter(s=>s.size===100),s5=sal.filter(s=>s.size===500);
-    document.getElementById('s1C').textContent=s1.length;
-    document.getElementById('s1Q').textContent=s1.reduce((s,x)=>s+x.qty,0);
-    document.getElementById('s1R').textContent=s1.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';
-    document.getElementById('s5C').textContent=s5.length;
-    document.getElementById('s5Q').textContent=s5.reduce((s,x)=>s+x.qty,0);
-    document.getElementById('s5R').textContent=s5.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';
-    const cm={};
-    sal.forEach(s=>{
-        if(!cm[s.customer])cm[s.customer]={paid:0,qty:0,ml:0,type:s.type};
-        cm[s.customer].paid+=s.paid;
-        cm[s.customer].qty+=s.qty;
-        cm[s.customer].ml+=s.totalMl;
-    });
-    const so=Object.entries(cm).sort((a,b)=>b[1].paid-a[1].paid).slice(0,10);
-    const tc2=document.getElementById('topCust');
-    if(!so.length) tc2.innerHTML='';
-    else tc2.innerHTML=so.map(([n,d])=>`<div class="customer-summary-item"><div class="cs-top"><span class="cs-name">${n}</span><span class="cs-total">${d.paid.toFixed(0)}₪</span></div><div class="cs-details"><span>${d.qty}btl</span><span>${d.ml}ml</span><span class="sale-badge ${d.type}" style="font-size:9px">${d.type==='vip'?'⭐':'🏷️'}</span></div></div>`).join('');
-}
-
-// === BACKUP ===
-function exportFile(){
-    const data={version:2,exported:new Date().toISOString(),supply:sup,recipes:rec,history:his,sales:sal,customers:cust,salePrefs:{type:sTyp,size:sSiz},_timestamp:getLocalTimestamp()};
-    const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    const u=URL.createObjectURL(b);
-    const a=document.createElement('a');
-    a.href=u;a.download='juice-'+new Date().toISOString().split('T')[0]+'.json';
-    document.body.appendChild(a);a.click();document.body.removeChild(a);
-    URL.revokeObjectURL(u);
-    showToast('📤 Exported!');
-}
-function importFile(ev){
-    const f=ev.target.files[0];if(!f)return;
-    const r=new FileReader();
-    r.onload=function(e){
-        try{
-            const d=JSON.parse(e.target.result);
-            if(!d.version)return showToast('❌ Invalid!');
-            sMod('📥','Import?',`Replace with backup from <strong>${new Date(d.exported).toLocaleDateString()}</strong>?`,
-                `<div class="modal-detail-row"><span>Recipes</span><span class="mdv">${(d.recipes||[]).length}</span></div><div class="modal-detail-row"><span>Sales</span><span class="mdv">${(d.sales||[]).length}</span></div>`,
-                'Import','confirm-green',()=>{
-                    applyCloudData(d);
-                    showToast('✅ Imported!');
-                    dataChanged();
-                });
-        }catch{showToast('❌ Invalid!')}
-    };
-    r.readAsText(f);ev.target.value='';
-}
-function updBkInfo(){
-    const ls=ld('juiceLastSync',null);
-    document.getElementById('lastSyncLabel').textContent=ls?new Date(ls).toLocaleDateString()+' '+new Date(ls).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'Never';
-    const a=sup.nic+sup.hrq+sup.pg+sup.vg;
-    document.getElementById('bkSup').textContent=a>0?'✅':'—';
-    document.getElementById('bkRec').textContent=rec.length;
-    document.getElementById('bkHis').textContent=his.length;
-    document.getElementById('bkSal').textContent=sal.length;
-    document.getElementById('bkCus').textContent=Object.keys(cust).length;
-}
-
-function showToast(m){
-    const t=document.getElementById('toast');
-    t.textContent=m;t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-// === INIT ===
-window.addEventListener('load', () => {
-    sup=ld('juiceSupply',{nic:0,hrq:0,pg:0,vg:0});
-    rec=ld('juiceRecipes',[]);
-    his=ld('juiceHistory',[]);
-    sal=ld('juiceSales',[]);
-    cust=ld('juiceCustomers',{});
+// INIT
+window.addEventListener('load',()=>{
+    sup=ld('juiceSupply',{nic:0,hrq:0,pg:0,vg:0});rec=ld('juiceRecipes',[]);his=ld('juiceHistory',[]);sal=ld('juiceSales',[]);cust=ld('juiceCustomers',{});
     refreshAll();
-
-    // Smart sync on load — always checks cloud
+    dbg('App loaded. Local ts='+getTS()+', sales='+sal.length);
     smartSync();
-
-    // Also sync when app becomes visible again (switching back to tab/app)
-    document.addEventListener('visibilitychange', () => {
-        if(document.visibilityState === 'visible'){
-            smartSync();
-        }
-    });
+    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){dbg('App visible again, syncing...');smartSync()}});
 });
 </script>
 </body>
 </html>
-
