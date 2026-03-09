@@ -247,7 +247,7 @@
     <div class="card"><div class="card-title green"><span>☁️</span> Cloud Sync</div>
         <div class="backup-info" style="margin-bottom:12px">Your data syncs to <strong>Google Sheets</strong> automatically. Last sync: <strong id="lastSyncLabel">Never</strong></div>
         <button class="backup-btn export" onclick="manualSync()">☁️ Sync Now</button>
-        <button class="backup-btn import" style="margin-top:8px" onclick="pullFromCloud()">📥 Pull from Cloud</button>
+        <button class="backup-btn import" style="margin-top:8px" onclick="forcePullFromCloud()">📥 Pull from Cloud</button>
     </div>
     <div class="card"><div class="card-title blue"><span>💾</span> File Backup</div>
         <button class="backup-btn export" onclick="exportFile()">📤 Export File</button>
@@ -286,124 +286,665 @@ let cT=0,sup=ld('juiceSupply',{nic:0,hrq:0,pg:0,vg:0}),rec=ld('juiceRecipes',[])
 function ld(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch{return f}}
 function sv(k,v){localStorage.setItem(k,JSON.stringify(v))}
 
-// === SYNC ===
-function setSyncUI(state,msg){
-    const dot=document.getElementById('syncDot'),st=document.getElementById('syncStatus');
-    dot.className='sync-dot '+state;st.textContent=msg;
+// === TIMESTAMP TRACKING ===
+function getLocalTimestamp(){
+    return ld('juiceSyncTimestamp', 0);
 }
 
-async function syncToCloud(){
-    if(syncing)return;syncing=true;setSyncUI('syncing','Syncing...');
-    try{
-        const data={supply:sup,recipes:rec,history:his,sales:sal,customers:cust,salePrefs:{type:sTyp,size:sSiz}};
-        const res=await fetch(API+'?action=writeAll',{method:'POST',body:JSON.stringify(data),headers:{'Content-Type':'text/plain'}});
-        const json=await res.json();
-        if(json.status==='ok'){
-            sv('juiceLastSync',new Date().toISOString());
-            setSyncUI('online','Synced '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}));
-        }else{setSyncUI('offline','Sync failed')}
-    }catch(e){setSyncUI('offline','Offline')}
-    syncing=false;
+function setLocalTimestamp(ts){
+    if(!ts) ts = Date.now();
+    sv('juiceSyncTimestamp', ts);
+    return ts;
 }
 
-async function pullFromCloud(){
-    setSyncUI('syncing','Pulling...');
-    try{
-        const res=await fetch(API+'?action=readAll');
-        const json=await res.json();
+function markLocalChanged(){
+    const ts = Date.now();
+    setLocalTimestamp(ts);
+    return ts;
+}
+
+// === SYNC ENGINE ===
+function setSyncUI(state, msg){
+    const dot=document.getElementById('syncDot'), st=document.getElementById('syncStatus');
+    dot.className='sync-dot '+state;
+    st.textContent=msg;
+}
+
+function getAllLocalData(){
+    return {
+        supply: sup,
+        recipes: rec,
+        history: his,
+        sales: sal,
+        customers: cust,
+        salePrefs: {type: sTyp, size: sSiz},
+        _timestamp: getLocalTimestamp()
+    };
+}
+
+function applyCloudData(d){
+    if(d.supply){sup = d.supply; sv('juiceSupply', sup)}
+    if(d.recipes){rec = d.recipes; sv('juiceRecipes', rec)}
+    if(d.history){his = d.history; sv('juiceHistory', his)}
+    if(d.sales){sal = d.sales; sv('juiceSales', sal)}
+    if(d.customers){cust = d.customers; sv('juiceCustomers', cust)}
+    if(d.salePrefs){
+        sTyp = d.salePrefs.type || 'regular';
+        sSiz = d.salePrefs.size || '100';
+        sv('juiceSalePrefs', d.salePrefs);
+    }
+    if(d._timestamp){
+        setLocalTimestamp(d._timestamp);
+    }
+    refreshAll();
+}
+
+async function pushToCloud(){
+    if(syncing) return;
+    syncing = true;
+    setSyncUI('syncing', 'Pushing...');
+    try {
+        const data = getAllLocalData();
+        const res = await fetch(API + '?action=writeAll', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {'Content-Type': 'text/plain'}
+        });
+        const json = await res.json();
+        if(json.status === 'ok'){
+            sv('juiceLastSync', new Date().toISOString());
+            setSyncUI('online', 'Synced ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}));
+        } else {
+            setSyncUI('offline', 'Push failed');
+        }
+    } catch(e){
+        setSyncUI('offline', 'Offline');
+    }
+    syncing = false;
+}
+
+async function pullFromCloud(silent){
+    if(syncing) return null;
+    syncing = true;
+    if(!silent) setSyncUI('syncing', 'Pulling...');
+    try {
+        const res = await fetch(API + '?action=readAll');
+        const json = await res.json();
+        syncing = false;
         if(json.data){
-            const d=json.data;
-            if(d.supply){sup=d.supply;sv('juiceSupply',sup)}
-            if(d.recipes){rec=d.recipes;sv('juiceRecipes',rec)}
-            if(d.history){his=d.history;sv('juiceHistory',his)}
-            if(d.sales){sal=d.sales;sv('juiceSales',sal)}
-            if(d.customers){cust=d.customers;sv('juiceCustomers',cust)}
-            if(d.salePrefs){sTyp=d.salePrefs.type||'regular';sSiz=d.salePrefs.size||'100';sv('juiceSalePrefs',d.salePrefs)}
-            setSyncUI('online','Pulled!');
-            refreshAll();
-            showToast('☁️ Data loaded from cloud!');
-        }else{setSyncUI('offline','No cloud data')}
-    }catch{setSyncUI('offline','Pull failed')}
+            return json.data;
+        }
+        return null;
+    } catch(e){
+        syncing = false;
+        if(!silent) setSyncUI('offline', 'Pull failed');
+        return null;
+    }
 }
 
-function manualSync(){syncToCloud().then(()=>showToast('☁️ Synced!'))}
+async function smartSync(){
+    setSyncUI('syncing', 'Checking...');
 
-function debouncedSync(){clearTimeout(window._syncTimer);window._syncTimer=setTimeout(()=>syncToCloud(),3000)}
+    const cloudData = await pullFromCloud(true);
 
-function refreshAll(){populateSI();updateSupply();renderRec();renderHis();restoreSP();updSP();renderSal();updSum();updBkInfo()}
+    if(!cloudData){
+        // No cloud data or offline
+        const hasLocal = rec.length || his.length || sal.length || (sup.nic+sup.hrq+sup.pg+sup.vg > 0);
+        if(hasLocal){
+            // Push local to cloud
+            await pushToCloud();
+        } else {
+            setSyncUI('online', 'No data yet');
+        }
+        return;
+    }
+
+    const localTs = getLocalTimestamp();
+    const cloudTs = cloudData._timestamp || 0;
+
+    if(cloudTs === 0 && localTs === 0){
+        // Both empty, nothing to do
+        setSyncUI('online', 'Ready');
+        return;
+    }
+
+    if(cloudTs > localTs){
+        // Cloud is newer — apply it
+        console.log('Cloud is newer:', cloudTs, '>', localTs);
+        applyCloudData(cloudData);
+        setSyncUI('online', '☁️ Loaded latest');
+        showToast('☁️ Newer data loaded from cloud');
+    } else if(localTs > cloudTs){
+        // Local is newer — push to cloud
+        console.log('Local is newer:', localTs, '>', cloudTs);
+        await pushToCloud();
+    } else {
+        // Same timestamp — in sync
+        setSyncUI('online', 'In sync ✓');
+    }
+}
+
+async function manualSync(){
+    await smartSync();
+    showToast('☁️ Sync complete!');
+}
+
+async function forcePullFromCloud(){
+    setSyncUI('syncing', 'Force pulling...');
+    const cloudData = await pullFromCloud(false);
+    if(cloudData){
+        applyCloudData(cloudData);
+        setSyncUI('online', '☁️ Pulled!');
+        showToast('☁️ Data loaded from cloud!');
+    } else {
+        setSyncUI('offline', 'No cloud data');
+        showToast('❌ No data on cloud');
+    }
+}
+
+function debouncedPush(){
+    clearTimeout(window._syncTimer);
+    window._syncTimer = setTimeout(() => pushToCloud(), 3000);
+}
+
+// Called after any data change
+function dataChanged(){
+    markLocalChanged();
+    debouncedPush();
+}
+
+function refreshAll(){
+    populateSI();
+    updateSupply();
+    renderRec();
+    renderHis();
+    restoreSP();
+    updSP();
+    renderSal();
+    updSum();
+    updBkInfo();
+}
 
 // === TABS ===
-function switchTab(id,btn){document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');if(id==='supply'){populateSI();updateSupply()}if(id==='profit')updTot(cT);if(id==='recipes')renderRec();if(id==='history')renderHis();if(id==='sales'){restoreSP();updSP();renderSal();updSum()}if(id==='backup')updBkInfo()}
+function switchTab(id,btn){
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    btn.classList.add('active');
+    if(id==='supply'){populateSI();updateSupply()}
+    if(id==='profit')updTot(cT);
+    if(id==='recipes')renderRec();
+    if(id==='history')renderHis();
+    if(id==='sales'){restoreSP();updSP();renderSal();updSum()}
+    if(id==='backup')updBkInfo();
+}
 
 // === CALC ===
 function gI(k){return document.querySelector(`[data-key="${k}"] input`)}
 function m2d(k,m){return U[k]==='g'?m*DN[k]:m}
 function d2m(k,v){return U[k]==='g'?v/DN[k]:v}
-function aB(t,s){for(let k in R)V[k]=t*R[k];for(let k in R){if(k===s)continue;const i=gI(k),d=m2d(k,V[k]);i.value=d>0?d.toFixed(2):'';i.classList.add('calculated')}if(s&&s!=='batch')gI(s).classList.remove('calculated');else for(let k in R){gI(k).value=m2d(k,V[k]).toFixed(2);gI(k).classList.add('calculated')}cT=t;updTot(t);const sh=t>0?'block':'none';document.getElementById('deductBtn').style.display=sh;document.getElementById('logBatchBtn').style.display=sh}
+function aB(t,s){
+    for(let k in R) V[k]=t*R[k];
+    for(let k in R){
+        if(k===s)continue;
+        const i=gI(k),d=m2d(k,V[k]);
+        i.value=d>0?d.toFixed(2):'';
+        i.classList.add('calculated');
+    }
+    if(s&&s!=='batch') gI(s).classList.remove('calculated');
+    else for(let k in R){gI(k).value=m2d(k,V[k]).toFixed(2);gI(k).classList.add('calculated')}
+    cT=t;updTot(t);
+    const sh=t>0?'block':'none';
+    document.getElementById('deductBtn').style.display=sh;
+    document.getElementById('logBatchBtn').style.display=sh;
+}
 function setPreset(v){document.getElementById('batchScaler').value=v;scaleBatch(v)}
-function scaleBatch(r){const t=parseFloat(r)||0;aB(t,'batch');document.querySelectorAll('.preset-btn').forEach(b=>{const p=parseFloat(b.textContent);b.classList.toggle('active',Math.abs(p-t)<1||(b.textContent==='Full'&&Math.abs(t-TML)<1))})}
-function calcIng(s,r){const v=parseFloat(r)||0,m=d2m(s,v),t=R[s]>0?m/R[s]:0;document.getElementById('batchScaler').value=t>0?t.toFixed(1):'';document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));aB(t,s)}
+function scaleBatch(r){
+    const t=parseFloat(r)||0;aB(t,'batch');
+    document.querySelectorAll('.preset-btn').forEach(b=>{
+        const p=parseFloat(b.textContent);
+        b.classList.toggle('active',Math.abs(p-t)<1||(b.textContent==='Full'&&Math.abs(t-TML)<1));
+    });
+}
+function calcIng(s,r){
+    const v=parseFloat(r)||0,m=d2m(s,v),t=R[s]>0?m/R[s]:0;
+    document.getElementById('batchScaler').value=t>0?t.toFixed(1):'';
+    document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+    aB(t,s);
+}
 function gC(){let c=0;for(let k in V)c+=V[k]*CPM[k];return c}
 function gCPM(){let c=0;for(let k in R)c+=R[k]*CPM[k];return c}
-function updTot(t){document.getElementById('totalBatch').textContent=t.toFixed(1)+' ml';const nm=t>0?(NIC_MG*V.nic)/t:0;document.getElementById('nicStrength').textContent=nm.toFixed(2)+' mg/ml';const pT=V.nic+V.hrq+V.pg,vT=V.vg,vP=t>0?vT/t*100:70,pP=t>0?pT/t*100:30;document.getElementById('vgBar').style.width=vP+'%';document.getElementById('pgBar').style.width=pP+'%';document.getElementById('vgPercent').textContent='VG '+vP.toFixed(1)+'%';document.getElementById('pgPercent').textContent='PG '+pP.toFixed(1)+'%';const c=gC(),c1=t>0?c/t*100:0;document.getElementById('totalCost').textContent=c.toFixed(2)+'₪';document.getElementById('costPer100').textContent=c1.toFixed(2)+'₪/100ml';document.getElementById('costPerBottle').textContent=c1.toFixed(2)+'₪';const b=Math.floor(t/100);document.getElementById('bottleCount').textContent=b;document.getElementById('leftover').textContent=(t-b*100).toFixed(1)+'ml';const rR=b*60;document.getElementById('revenueRegular').textContent='Rev:'+rR+'₪';document.getElementById('profitRegular').textContent=(rR-c).toFixed(2)+'₪';const rV=b*45;document.getElementById('revenueVip').textContent='Rev:'+rV+'₪';document.getElementById('profitVip').textContent=(rV-c).toFixed(2)+'₪';const mg=c1>0?(60-c1)/60*100:0;document.getElementById('marginRegular').textContent=mg.toFixed(1)+'%';document.getElementById('profitPerRegular').textContent=(60-c1).toFixed(2)+'₪/btl'}
-function setUnit(k,u,b){U[k]=u;b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(V[k]>0)gI(k).value=m2d(k,V[k]).toFixed(2)}
-function resetAll(){for(let k in V){V[k]=0;const i=gI(k);i.value='';i.classList.remove('calculated')}cT=0;document.getElementById('batchScaler').value='';document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));updTot(0);document.getElementById('deductBtn').style.display='none';document.getElementById('logBatchBtn').style.display='none';document.querySelectorAll('#tab-calc .unit-toggle').forEach(t=>{const i=t.dataset.ingredient;if(i){U[i]='ml';t.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===0))}})}
+function updTot(t){
+    document.getElementById('totalBatch').textContent=t.toFixed(1)+' ml';
+    const nm=t>0?(NIC_MG*V.nic)/t:0;
+    document.getElementById('nicStrength').textContent=nm.toFixed(2)+' mg/ml';
+    const pT=V.nic+V.hrq+V.pg,vT=V.vg,vP=t>0?vT/t*100:70,pP=t>0?pT/t*100:30;
+    document.getElementById('vgBar').style.width=vP+'%';
+    document.getElementById('pgBar').style.width=pP+'%';
+    document.getElementById('vgPercent').textContent='VG '+vP.toFixed(1)+'%';
+    document.getElementById('pgPercent').textContent='PG '+pP.toFixed(1)+'%';
+    const c=gC(),c1=t>0?c/t*100:0;
+    document.getElementById('totalCost').textContent=c.toFixed(2)+'₪';
+    document.getElementById('costPer100').textContent=c1.toFixed(2)+'₪/100ml';
+    document.getElementById('costPerBottle').textContent=c1.toFixed(2)+'₪';
+    const b=Math.floor(t/100);
+    document.getElementById('bottleCount').textContent=b;
+    document.getElementById('leftover').textContent=(t-b*100).toFixed(1)+'ml';
+    const rR=b*60;
+    document.getElementById('revenueRegular').textContent='Rev:'+rR+'₪';
+    document.getElementById('profitRegular').textContent=(rR-c).toFixed(2)+'₪';
+    const rV=b*45;
+    document.getElementById('revenueVip').textContent='Rev:'+rV+'₪';
+    document.getElementById('profitVip').textContent=(rV-c).toFixed(2)+'₪';
+    const mg=c1>0?(60-c1)/60*100:0;
+    document.getElementById('marginRegular').textContent=mg.toFixed(1)+'%';
+    document.getElementById('profitPerRegular').textContent=(60-c1).toFixed(2)+'₪/btl';
+}
+function setUnit(k,u,b){
+    U[k]=u;
+    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    if(V[k]>0) gI(k).value=m2d(k,V[k]).toFixed(2);
+}
+function resetAll(){
+    for(let k in V){V[k]=0;const i=gI(k);i.value='';i.classList.remove('calculated')}
+    cT=0;document.getElementById('batchScaler').value='';
+    document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+    updTot(0);
+    document.getElementById('deductBtn').style.display='none';
+    document.getElementById('logBatchBtn').style.display='none';
+    document.querySelectorAll('#tab-calc .unit-toggle').forEach(t=>{
+        const i=t.dataset.ingredient;
+        if(i){U[i]='ml';t.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===0))}
+    });
+}
 
 // === MODAL ===
-function sMod(ic,ti,ms,dt,bt,bc,fn){document.getElementById('mIcon').textContent=ic;document.getElementById('mTitle').textContent=ti;document.getElementById('mMsg').innerHTML=ms;const d=document.getElementById('mDet');if(dt){d.innerHTML=dt;d.style.display='block'}else d.style.display='none';const b=document.getElementById('mBtn');b.textContent=bt;b.className='modal-btn '+(bc||'confirm');b.onclick=()=>{hMod();fn()};document.getElementById('modalOverlay').classList.add('show')}
+function sMod(ic,ti,ms,dt,bt,bc,fn){
+    document.getElementById('mIcon').textContent=ic;
+    document.getElementById('mTitle').textContent=ti;
+    document.getElementById('mMsg').innerHTML=ms;
+    const d=document.getElementById('mDet');
+    if(dt){d.innerHTML=dt;d.style.display='block'}else d.style.display='none';
+    const b=document.getElementById('mBtn');
+    b.textContent=bt;b.className='modal-btn '+(bc||'confirm');
+    b.onclick=()=>{hMod();fn()};
+    document.getElementById('modalOverlay').classList.add('show');
+}
 function hMod(){document.getElementById('modalOverlay').classList.remove('show')}
 function clMod(e){if(e.target===document.getElementById('modalOverlay'))hMod()}
 
-function showDeductConfirm(){if(cT<=0)return;sMod('📦','Deduct?',`<strong>${cT.toFixed(0)}ml</strong> from stock?`,`<div class="modal-detail-row"><span>Nic</span><span class="mdv">-${V.nic.toFixed(1)}ml</span></div><div class="modal-detail-row"><span>HRQ</span><span class="mdv">-${V.hrq.toFixed(1)}ml</span></div><div class="modal-detail-row"><span>PG</span><span class="mdv">-${V.pg.toFixed(1)}ml</span></div><div class="modal-detail-row"><span>VG</span><span class="mdv">-${V.vg.toFixed(1)}ml</span></div>`,'Deduct','confirm',()=>{sup.nic=Math.max(0,sup.nic-V.nic);sup.hrq=Math.max(0,sup.hrq-V.hrq);sup.pg=Math.max(0,sup.pg-V.pg);sup.vg=Math.max(0,sup.vg-V.vg);sv('juiceSupply',sup);showToast('📦 Done!');populateSI();updateSupply();debouncedSync()})}
-function showLogConfirm(){if(cT<=0)return;const c=gC();sMod('📜','Log?',`<strong>${cT.toFixed(0)}ml</strong> batch`,`<div class="modal-detail-row"><span>Cost</span><span class="mdv">${c.toFixed(2)}₪</span></div>`,'Log','confirm-green',()=>{const n=new Date();his.unshift({id:Date.now(),date:n.toLocaleDateString(),time:n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),total:cT,values:{...V},cost:c,nicMg:cT>0?(NIC_MG*V.nic)/cT:0});sv('juiceHistory',his);showToast('📜 Logged!');debouncedSync()})}
-function showClear(ty){const a=ty==='history'?his:sal;sMod('🗑️','Clear?',`Delete <strong>${a.length}</strong> entries?`,null,'Clear','confirm',()=>{if(ty==='history'){his=[];sv('juiceHistory',[]); renderHis()}else{sal=[];sv('juiceSales',[]);renderSal();updSum()}showToast('🗑️ Done!');debouncedSync()})}
+function showDeductConfirm(){
+    if(cT<=0)return;
+    sMod('📦','Deduct?',`<strong>${cT.toFixed(0)}ml</strong> from stock?`,
+        `<div class="modal-detail-row"><span>Nic</span><span class="mdv">-${V.nic.toFixed(1)}ml</span></div><div class="modal-detail-row"><span>HRQ</span><span class="mdv">-${V.hrq.toFixed(1)}ml</span></div><div class="modal-detail-row"><span>PG</span><span class="mdv">-${V.pg.toFixed(1)}ml</span></div><div class="modal-detail-row"><span>VG</span><span class="mdv">-${V.vg.toFixed(1)}ml</span></div>`,
+        'Deduct','confirm',()=>{
+            sup.nic=Math.max(0,sup.nic-V.nic);
+            sup.hrq=Math.max(0,sup.hrq-V.hrq);
+            sup.pg=Math.max(0,sup.pg-V.pg);
+            sup.vg=Math.max(0,sup.vg-V.vg);
+            sv('juiceSupply',sup);
+            showToast('📦 Done!');
+            populateSI();updateSupply();
+            dataChanged();
+        });
+}
+
+function showLogConfirm(){
+    if(cT<=0)return;
+    const c=gC();
+    sMod('📜','Log?',`<strong>${cT.toFixed(0)}ml</strong> batch`,
+        `<div class="modal-detail-row"><span>Cost</span><span class="mdv">${c.toFixed(2)}₪</span></div>`,
+        'Log','confirm-green',()=>{
+            const n=new Date();
+            his.unshift({id:Date.now(),date:n.toLocaleDateString(),time:n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),total:cT,values:{...V},cost:c,nicMg:cT>0?(NIC_MG*V.nic)/cT:0});
+            sv('juiceHistory',his);
+            showToast('📜 Logged!');
+            dataChanged();
+        });
+}
+
+function showClear(ty){
+    const a=ty==='history'?his:sal;
+    sMod('🗑️','Clear?',`Delete <strong>${a.length}</strong> entries?`,null,'Clear','confirm',()=>{
+        if(ty==='history'){his=[];sv('juiceHistory',[]);renderHis()}
+        else{sal=[];sv('juiceSales',[]);renderSal();updSum()}
+        showToast('🗑️ Done!');
+        dataChanged();
+    });
+}
 
 // === SUPPLY ===
-function s2m(k){const id='supply'+k[0].toUpperCase()+k.slice(1);const v=parseFloat(document.getElementById(id).value)||0;return SU[k]==='g'?v/DN[k]:v}
-function setSU(k,u,b){const id='supply'+k[0].toUpperCase()+k.slice(1);const i=document.getElementById(id);const m=s2m(k);SU[k]=u;b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(m>0)i.value=(u==='g'?m*DN[k]:m).toFixed(1)}
-function populateSI(){['nic','hrq','pg','vg'].forEach(k=>{const id='supply'+k[0].toUpperCase()+k.slice(1),m=sup[k],d=SU[k]==='g'?m*DN[k]:m;document.getElementById(id).value=d>0?d.toFixed(1):''})}
-function updateSupply(){const c={nic:s2m('nic'),hrq:s2m('hrq'),pg:s2m('pg'),vg:s2m('vg')};let mn=Infinity,lm='';for(let k in R){const cm=c[k]/R[k];if(cm<mn){mn=cm;lm=k}}if(!isFinite(mn))mn=0;document.getElementById('maxBatchValue').textContent=mn.toFixed(0)+'ml';document.getElementById('maxBatchLimiter').textContent=mn>0?'Limited: '+NM[lm]:'—';const it=[{k:'nic',b:'nicBar',s:'nicStockLabel',t:'nicBatches'},{k:'hrq',b:'hrqBar',s:'hrqStockLabel',t:'hrqBatches'},{k:'pg',b:'pgBar2',s:'pgStockLabel',t:'pgBatches'},{k:'vg',b:'vgBar2',s:'vgStockLabel',t:'vgBatches'}];let w=false;it.forEach(i=>{const m=c[i.k],cm=m/R[i.k],p=Math.min(m/FS[i.k]*100,100);let st='good';if(cm<500){st='danger';w=true}else if(cm<1500)st='warning';document.getElementById(i.b).style.width=p+'%';document.getElementById(i.b).className='supply-bar-fill '+st;const sl=document.getElementById(i.s);sl.textContent=m.toFixed(0)+'ml';sl.className='supply-stock '+st;document.getElementById(i.t).textContent=cm.toFixed(0)+'ml'});const wd=document.getElementById('supplyWarning'),any=c.nic+c.hrq+c.pg+c.vg;if(any>0&&mn<=0)wd.innerHTML='<div class="warning-banner danger"><span class="warn-icon">🚨</span><span>Empty!</span></div>';else if(mn>0&&mn<500)wd.innerHTML=`<div class="warning-banner danger"><span class="warn-icon">⚠️</span><span>Low! ${mn.toFixed(0)}ml</span></div>`;else if(mn>=500&&mn<1500)wd.innerHTML=`<div class="warning-banner warning"><span class="warn-icon">📋</span><span>${mn.toFixed(0)}ml left</span></div>`;else if(mn>=1500)wd.innerHTML=`<div class="warning-banner good"><span class="warn-icon">✅</span><span>${mn.toFixed(0)}ml</span></div>`;else wd.innerHTML='';document.getElementById('supplyBadge').classList.toggle('visible',w)}
-function saveSupply(){sup.nic=s2m('nic');sup.hrq=s2m('hrq');sup.pg=s2m('pg');sup.vg=s2m('vg');sv('juiceSupply',sup);showToast('✅ Saved!');updateSupply();debouncedSync()}
+function s2m(k){
+    const id='supply'+k[0].toUpperCase()+k.slice(1);
+    const v=parseFloat(document.getElementById(id).value)||0;
+    return SU[k]==='g'?v/DN[k]:v;
+}
+function setSU(k,u,b){
+    const id='supply'+k[0].toUpperCase()+k.slice(1);
+    const i=document.getElementById(id);
+    const m=s2m(k);
+    SU[k]=u;
+    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    if(m>0) i.value=(u==='g'?m*DN[k]:m).toFixed(1);
+}
+function populateSI(){
+    ['nic','hrq','pg','vg'].forEach(k=>{
+        const id='supply'+k[0].toUpperCase()+k.slice(1);
+        const m=sup[k],d=SU[k]==='g'?m*DN[k]:m;
+        document.getElementById(id).value=d>0?d.toFixed(1):'';
+    });
+}
+function updateSupply(){
+    const c={nic:s2m('nic'),hrq:s2m('hrq'),pg:s2m('pg'),vg:s2m('vg')};
+    let mn=Infinity,lm='';
+    for(let k in R){const cm=c[k]/R[k];if(cm<mn){mn=cm;lm=k}}
+    if(!isFinite(mn))mn=0;
+    document.getElementById('maxBatchValue').textContent=mn.toFixed(0)+'ml';
+    document.getElementById('maxBatchLimiter').textContent=mn>0?'Limited: '+NM[lm]:'—';
+    const it=[
+        {k:'nic',b:'nicBar',s:'nicStockLabel',t:'nicBatches'},
+        {k:'hrq',b:'hrqBar',s:'hrqStockLabel',t:'hrqBatches'},
+        {k:'pg',b:'pgBar2',s:'pgStockLabel',t:'pgBatches'},
+        {k:'vg',b:'vgBar2',s:'vgStockLabel',t:'vgBatches'}
+    ];
+    let w=false;
+    it.forEach(i=>{
+        const m=c[i.k],cm=m/R[i.k],p=Math.min(m/FS[i.k]*100,100);
+        let st='good';
+        if(cm<500){st='danger';w=true}else if(cm<1500)st='warning';
+        document.getElementById(i.b).style.width=p+'%';
+        document.getElementById(i.b).className='supply-bar-fill '+st;
+        const sl=document.getElementById(i.s);
+        sl.textContent=m.toFixed(0)+'ml';
+        sl.className='supply-stock '+st;
+        document.getElementById(i.t).textContent=cm.toFixed(0)+'ml';
+    });
+    const wd=document.getElementById('supplyWarning'),any=c.nic+c.hrq+c.pg+c.vg;
+    if(any>0&&mn<=0) wd.innerHTML='<div class="warning-banner danger"><span class="warn-icon">🚨</span><span>Empty!</span></div>';
+    else if(mn>0&&mn<500) wd.innerHTML=`<div class="warning-banner danger"><span class="warn-icon">⚠️</span><span>Low! ${mn.toFixed(0)}ml</span></div>`;
+    else if(mn>=500&&mn<1500) wd.innerHTML=`<div class="warning-banner warning"><span class="warn-icon">📋</span><span>${mn.toFixed(0)}ml left</span></div>`;
+    else if(mn>=1500) wd.innerHTML=`<div class="warning-banner good"><span class="warn-icon">✅</span><span>${mn.toFixed(0)}ml</span></div>`;
+    else wd.innerHTML='';
+    document.getElementById('supplyBadge').classList.toggle('visible',w);
+}
+function saveSupply(){
+    sup.nic=s2m('nic');sup.hrq=s2m('hrq');sup.pg=s2m('pg');sup.vg=s2m('vg');
+    sv('juiceSupply',sup);
+    showToast('✅ Saved!');
+    updateSupply();
+    dataChanged();
+}
 
 // === RECIPES ===
-function saveRecipe(){const n=document.getElementById('recipeNameInput').value.trim();if(!n)return showToast('❌ Name!');if(cT<=0)return showToast('❌ Calc!');rec.push({id:Date.now(),name:n,values:{...V},total:cT,nicMg:(NIC_MG*V.nic)/cT,date:new Date().toLocaleDateString()});sv('juiceRecipes',rec);document.getElementById('recipeNameInput').value='';renderRec();showToast('✅ Saved!');debouncedSync()}
-function loadRecipe(id){const r=rec.find(x=>x.id===id);if(!r)return;for(let k in r.values){V[k]=r.values[k];U[k]='ml'}cT=r.total;document.querySelectorAll('#tab-calc .unit-toggle').forEach(t=>{const i=t.dataset.ingredient;if(i){U[i]='ml';t.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===0))}});for(let k in V){const i=gI(k);i.value=V[k]>0?V[k].toFixed(2):'';i.classList.add('calculated')}document.getElementById('batchScaler').value=cT.toFixed(1);document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));updTot(cT);document.getElementById('deductBtn').style.display=cT>0?'block':'none';document.getElementById('logBatchBtn').style.display=cT>0?'block':'none';document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tab-calc').classList.add('active');document.querySelectorAll('.tab-btn')[0].classList.add('active');showToast('📋 Loaded!')}
-function deleteRecipe(id){rec=rec.filter(x=>x.id!==id);sv('juiceRecipes',rec);renderRec();showToast('🗑️');debouncedSync()}
-function renderRec(){const c=document.getElementById('recipeList');if(!rec.length)return c.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">No recipes</div></div>';c.innerHTML=rec.map(r=>`<div class="recipe-item"><div class="recipe-info"><div class="recipe-name">${r.name}</div><div class="recipe-detail">${r.total.toFixed(0)}ml·${(r.nicMg||0).toFixed(1)}mg·${r.date}</div></div><div class="recipe-actions"><button class="recipe-action-btn load" onclick="loadRecipe(${r.id})">Load</button><button class="recipe-action-btn delete" onclick="deleteRecipe(${r.id})">🗑️</button></div></div>`).join('')}
+function saveRecipe(){
+    const n=document.getElementById('recipeNameInput').value.trim();
+    if(!n)return showToast('❌ Name!');
+    if(cT<=0)return showToast('❌ Calc!');
+    rec.push({id:Date.now(),name:n,values:{...V},total:cT,nicMg:(NIC_MG*V.nic)/cT,date:new Date().toLocaleDateString()});
+    sv('juiceRecipes',rec);
+    document.getElementById('recipeNameInput').value='';
+    renderRec();showToast('✅ Saved!');
+    dataChanged();
+}
+function loadRecipe(id){
+    const r=rec.find(x=>x.id===id);if(!r)return;
+    for(let k in r.values){V[k]=r.values[k];U[k]='ml'}
+    cT=r.total;
+    document.querySelectorAll('#tab-calc .unit-toggle').forEach(t=>{
+        const i=t.dataset.ingredient;
+        if(i){U[i]='ml';t.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('active',j===0))}
+    });
+    for(let k in V){const i=gI(k);i.value=V[k]>0?V[k].toFixed(2):'';i.classList.add('calculated')}
+    document.getElementById('batchScaler').value=cT.toFixed(1);
+    document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+    updTot(cT);
+    document.getElementById('deductBtn').style.display=cT>0?'block':'none';
+    document.getElementById('logBatchBtn').style.display=cT>0?'block':'none';
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('tab-calc').classList.add('active');
+    document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    showToast('📋 Loaded!');
+}
+function deleteRecipe(id){
+    rec=rec.filter(x=>x.id!==id);
+    sv('juiceRecipes',rec);
+    renderRec();showToast('🗑️');
+    dataChanged();
+}
+function renderRec(){
+    const c=document.getElementById('recipeList');
+    if(!rec.length) return c.innerHTML='<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">No recipes</div></div>';
+    c.innerHTML=rec.map(r=>`<div class="recipe-item"><div class="recipe-info"><div class="recipe-name">${r.name}</div><div class="recipe-detail">${r.total.toFixed(0)}ml·${(r.nicMg||0).toFixed(1)}mg·${r.date}</div></div><div class="recipe-actions"><button class="recipe-action-btn load" onclick="loadRecipe(${r.id})">Load</button><button class="recipe-action-btn delete" onclick="deleteRecipe(${r.id})">🗑️</button></div></div>`).join('');
+}
 
 // === HISTORY ===
-function renderHis(){const c=document.getElementById('historyList'),cl=document.getElementById('clearHistoryBtn');document.getElementById('statBatches').textContent=his.length;document.getElementById('statTotalMl').textContent=his.reduce((s,h)=>s+h.total,0).toFixed(0);document.getElementById('statTotalCost').textContent=his.reduce((s,h)=>s+h.cost,0).toFixed(0);if(!his.length){c.innerHTML='<div class="empty-state"><div class="empty-icon">📜</div><div class="empty-text">No batches</div></div>';cl.style.display='none';return}cl.style.display='block';c.innerHTML=his.map(h=>`<div class="history-item"><div class="history-top"><div><div class="history-date">${h.date}</div><div class="history-time">${h.time}</div></div><span class="history-batch-size">${h.total.toFixed(0)}ml</span></div><div class="history-details"><span>Nic<span class="val">${h.values.nic.toFixed(1)}</span></span><span>HRQ<span class="val">${h.values.hrq.toFixed(1)}</span></span><span>PG<span class="val">${h.values.pg.toFixed(1)}</span></span><span>VG<span class="val">${h.values.vg.toFixed(1)}</span></span></div><div class="history-bottom"><span class="history-cost">💰${h.cost.toFixed(2)}₪</span><span class="history-nic">⚡${(h.nicMg||0).toFixed(1)}mg</span><button class="history-delete-btn" onclick="delHis(${h.id})">🗑️</button></div></div>`).join('')}
-function delHis(id){his=his.filter(h=>h.id!==id);sv('juiceHistory',his);renderHis();showToast('🗑️');debouncedSync()}
+function renderHis(){
+    const c=document.getElementById('historyList'),cl=document.getElementById('clearHistoryBtn');
+    document.getElementById('statBatches').textContent=his.length;
+    document.getElementById('statTotalMl').textContent=his.reduce((s,h)=>s+h.total,0).toFixed(0);
+    document.getElementById('statTotalCost').textContent=his.reduce((s,h)=>s+h.cost,0).toFixed(0);
+    if(!his.length){c.innerHTML='<div class="empty-state"><div class="empty-icon">📜</div><div class="empty-text">No batches</div></div>';cl.style.display='none';return}
+    cl.style.display='block';
+    c.innerHTML=his.map(h=>`<div class="history-item"><div class="history-top"><div><div class="history-date">${h.date}</div><div class="history-time">${h.time}</div></div><span class="history-batch-size">${h.total.toFixed(0)}ml</span></div><div class="history-details"><span>Nic<span class="val">${h.values.nic.toFixed(1)}</span></span><span>HRQ<span class="val">${h.values.hrq.toFixed(1)}</span></span><span>PG<span class="val">${h.values.pg.toFixed(1)}</span></span><span>VG<span class="val">${h.values.vg.toFixed(1)}</span></span></div><div class="history-bottom"><span class="history-cost">💰${h.cost.toFixed(2)}₪</span><span class="history-nic">⚡${(h.nicMg||0).toFixed(1)}mg</span><button class="history-delete-btn" onclick="delHis(${h.id})">🗑️</button></div></div>`).join('');
+}
+function delHis(id){
+    his=his.filter(h=>h.id!==id);
+    sv('juiceHistory',his);
+    renderHis();showToast('🗑️');
+    dataChanged();
+}
 
 // === SALES ===
-function restoreSP(){const p=ld('juiceSalePrefs',{type:'regular',size:'100'});sTyp=p.type;sSiz=p.size;document.getElementById('btnReg').className='sale-toggle-btn'+(sTyp==='regular'?' active-regular':'');document.getElementById('btnVip').className='sale-toggle-btn'+(sTyp==='vip'?' active-vip':'');document.getElementById('btn100').className='sale-toggle-btn'+(sSiz==='100'?' active-100':'');document.getElementById('btn500').className='sale-toggle-btn'+(sSiz==='500'?' active-500':'')}
-function setSTgl(w,v){if(w==='type'){sTyp=v;document.getElementById('btnReg').className='sale-toggle-btn'+(v==='regular'?' active-regular':'');document.getElementById('btnVip').className='sale-toggle-btn'+(v==='vip'?' active-vip':'')}else{sSiz=v;document.getElementById('btn100').className='sale-toggle-btn'+(v==='100'?' active-100':'');document.getElementById('btn500').className='sale-toggle-btn'+(v==='500'?' active-500':'')}sv('juiceSalePrefs',{type:sTyp,size:sSiz});updSP()}
-function updSP(){const q=parseInt(document.getElementById('saleQty').value)||1,t=PR[sTyp][parseInt(sSiz)]*q;document.getElementById('saleSugPrice').textContent=t+'₪';const p=document.getElementById('salePaid');if(!p.value||p.dataset.auto==='true'){p.value=t;p.dataset.auto='true'}}
-function onCustIn(){const v=document.getElementById('saleCustomer').value.trim().toLowerCase(),l=document.getElementById('acList');if(!v){l.classList.remove('show');return}const m=Object.keys(cust).filter(n=>n.toLowerCase().includes(v)).slice(0,5);if(!m.length){l.classList.remove('show');return}l.innerHTML=m.map(n=>`<div class="autocomplete-item" onclick="selCust('${n.replace(/'/g,"\\'")}')">${n}<div class="ac-tags"><span class="ac-tag ${cust[n].type}">${cust[n].type==='vip'?'⭐':'🏷️'}</span></div></div>`).join('');l.classList.add('show')}
-function selCust(n){document.getElementById('saleCustomer').value=n;document.getElementById('acList').classList.remove('show');const c=cust[n];if(c){setSTgl('type',c.type);setSTgl('size',c.size)}updSP()}
-document.addEventListener('click',e=>{if(!e.target.closest('.sale-form-group'))document.getElementById('acList').classList.remove('show')})
+function restoreSP(){
+    const p=ld('juiceSalePrefs',{type:'regular',size:'100'});
+    sTyp=p.type;sSiz=p.size;
+    document.getElementById('btnReg').className='sale-toggle-btn'+(sTyp==='regular'?' active-regular':'');
+    document.getElementById('btnVip').className='sale-toggle-btn'+(sTyp==='vip'?' active-vip':'');
+    document.getElementById('btn100').className='sale-toggle-btn'+(sSiz==='100'?' active-100':'');
+    document.getElementById('btn500').className='sale-toggle-btn'+(sSiz==='500'?' active-500':'');
+}
+function setSTgl(w,v){
+    if(w==='type'){
+        sTyp=v;
+        document.getElementById('btnReg').className='sale-toggle-btn'+(v==='regular'?' active-regular':'');
+        document.getElementById('btnVip').className='sale-toggle-btn'+(v==='vip'?' active-vip':'');
+    } else {
+        sSiz=v;
+        document.getElementById('btn100').className='sale-toggle-btn'+(v==='100'?' active-100':'');
+        document.getElementById('btn500').className='sale-toggle-btn'+(v==='500'?' active-500':'');
+    }
+    sv('juiceSalePrefs',{type:sTyp,size:sSiz});
+    updSP();
+}
+function updSP(){
+    const q=parseInt(document.getElementById('saleQty').value)||1;
+    const t=PR[sTyp][parseInt(sSiz)]*q;
+    document.getElementById('saleSugPrice').textContent=t+'₪';
+    const p=document.getElementById('salePaid');
+    if(!p.value||p.dataset.auto==='true'){p.value=t;p.dataset.auto='true'}
+}
+function onCustIn(){
+    const v=document.getElementById('saleCustomer').value.trim().toLowerCase();
+    const l=document.getElementById('acList');
+    if(!v){l.classList.remove('show');return}
+    const m=Object.keys(cust).filter(n=>n.toLowerCase().includes(v)).slice(0,5);
+    if(!m.length){l.classList.remove('show');return}
+    l.innerHTML=m.map(n=>`<div class="autocomplete-item" onclick="selCust('${n.replace(/'/g,"\\'")}')">${n}<div class="ac-tags"><span class="ac-tag ${cust[n].type}">${cust[n].type==='vip'?'⭐':'🏷️'}</span></div></div>`).join('');
+    l.classList.add('show');
+}
+function selCust(n){
+    document.getElementById('saleCustomer').value=n;
+    document.getElementById('acList').classList.remove('show');
+    const c=cust[n];
+    if(c){setSTgl('type',c.type);setSTgl('size',c.size)}
+    updSP();
+}
+document.addEventListener('click',e=>{
+    if(!e.target.closest('.sale-form-group'))
+        document.getElementById('acList').classList.remove('show');
+});
 
-function addSale(){const cu=document.getElementById('saleCustomer').value.trim();if(!cu)return showToast('❌ Name!');const q=parseInt(document.getElementById('saleQty').value)||1,pa=parseFloat(document.getElementById('salePaid').value)||0;if(pa<=0)return showToast('❌ Amount!');const sz=parseInt(sSiz),sg=PR[sTyp][sz]*q,now=new Date();sal.unshift({id:Date.now(),customer:cu,type:sTyp,size:sz,qty:q,paid:pa,suggested:sg,date:now.toLocaleDateString(),time:now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),totalMl:sz*q});sv('juiceSales',sal);cust[cu]={type:sTyp,size:String(sz)};sv('juiceCustomers',cust);document.getElementById('saleCustomer').value='';document.getElementById('saleQty').value='1';document.getElementById('salePaid').value='';document.getElementById('salePaid').dataset.auto='true';updSP();renderSal();updSum();showToast('🛒 '+cu+' '+pa+'₪');debouncedSync()}
-function setSF(m,b){sFilt=m;document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderSal()}
-function renderSal(){const c=document.getElementById('salesList'),cl=document.getElementById('clearSalesBtn');let f=sal;if(sFilt==='regular')f=sal.filter(s=>s.type==='regular');else if(sFilt==='vip')f=sal.filter(s=>s.type==='vip');else if(sFilt==='100')f=sal.filter(s=>s.size===100);else if(sFilt==='500')f=sal.filter(s=>s.size===500);document.getElementById('statSalesCount').textContent=sal.length;document.getElementById('statSalesRevenue').textContent=sal.reduce((s,x)=>s+x.paid,0).toFixed(0);document.getElementById('statBottlesSold').textContent=sal.reduce((s,x)=>s+x.qty,0);if(!f.length){c.innerHTML='<div class="empty-state"><div class="empty-icon">🛒</div><div class="empty-text">'+(sal.length?'No match':'No sales')+'</div></div>';cl.style.display=sal.length?'block':'none';return}cl.style.display='block';c.innerHTML=f.map(s=>{const d=s.paid<s.suggested?`<span style="font-size:11px;color:#d63031;font-weight:600;margin-left:4px">-${(s.suggested-s.paid).toFixed(0)}₪</span>`:'';return`<div class="sale-item"><div class="sale-top"><div><div class="sale-customer">${s.customer}</div><div class="sale-date-info">${s.date}·${s.time}</div></div><div class="sale-badges"><span class="sale-badge ${s.type}">${s.type==='vip'?'⭐':'🏷️'}</span><span class="sale-badge size-${s.size}">${s.size}ml</span></div></div><div class="sale-bottom"><span class="sale-amount">${s.paid.toFixed(0)}₪${d}</span><span style="font-size:11px;color:#636e72">${s.qty}×${s.size}ml</span><button class="sale-delete-btn" onclick="delSal(${s.id})">🗑️</button></div></div>`}).join('')}
-function delSal(id){sal=sal.filter(s=>s.id!==id);sv('juiceSales',sal);renderSal();updSum();showToast('🗑️');debouncedSync()}
-function updSum(){const tr=sal.reduce((s,x)=>s+x.paid,0),tm=sal.reduce((s,x)=>s+x.totalMl,0),tc=tm*gCPM(),pr=tr-tc,mg=tr>0?pr/tr*100:0,tb=sal.reduce((s,x)=>s+x.qty,0);document.getElementById('sumRev').textContent=tr.toFixed(0)+'₪';document.getElementById('sumCost').textContent=tc.toFixed(0)+'₪';document.getElementById('sumProfit').textContent=pr.toFixed(0)+'₪';document.getElementById('sumMargin').textContent=mg.toFixed(1)+'%';document.getElementById('sumMl').textContent=tm;document.getElementById('sumBtl').textContent=tb+'btl';const rg=sal.filter(s=>s.type==='regular'),vi=sal.filter(s=>s.type==='vip');document.getElementById('sRC').textContent=rg.length;document.getElementById('sRM').textContent=rg.reduce((s,x)=>s+x.totalMl,0);document.getElementById('sRR').textContent=rg.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';document.getElementById('sVC').textContent=vi.length;document.getElementById('sVM').textContent=vi.reduce((s,x)=>s+x.totalMl,0);document.getElementById('sVR').textContent=vi.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';const s1=sal.filter(s=>s.size===100),s5=sal.filter(s=>s.size===500);document.getElementById('s1C').textContent=s1.length;document.getElementById('s1Q').textContent=s1.reduce((s,x)=>s+x.qty,0);document.getElementById('s1R').textContent=s1.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';document.getElementById('s5C').textContent=s5.length;document.getElementById('s5Q').textContent=s5.reduce((s,x)=>s+x.qty,0);document.getElementById('s5R').textContent=s5.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';const cm={};sal.forEach(s=>{if(!cm[s.customer])cm[s.customer]={paid:0,qty:0,ml:0,type:s.type};cm[s.customer].paid+=s.paid;cm[s.customer].qty+=s.qty;cm[s.customer].ml+=s.totalMl});const so=Object.entries(cm).sort((a,b)=>b[1].paid-a[1].paid).slice(0,10),tc2=document.getElementById('topCust');if(!so.length)tc2.innerHTML='';else tc2.innerHTML=so.map(([n,d])=>`<div class="customer-summary-item"><div class="cs-top"><span class="cs-name">${n}</span><span class="cs-total">${d.paid.toFixed(0)}₪</span></div><div class="cs-details"><span>${d.qty}btl</span><span>${d.ml}ml</span><span class="sale-badge ${d.type}" style="font-size:9px">${d.type==='vip'?'⭐':'🏷️'}</span></div></div>`).join('')}
+function addSale(){
+    const cu=document.getElementById('saleCustomer').value.trim();
+    if(!cu)return showToast('❌ Name!');
+    const q=parseInt(document.getElementById('saleQty').value)||1;
+    const pa=parseFloat(document.getElementById('salePaid').value)||0;
+    if(pa<=0)return showToast('❌ Amount!');
+    const sz=parseInt(sSiz),sg=PR[sTyp][sz]*q,now=new Date();
+    sal.unshift({
+        id:Date.now(),customer:cu,type:sTyp,size:sz,qty:q,paid:pa,suggested:sg,
+        date:now.toLocaleDateString(),
+        time:now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
+        totalMl:sz*q
+    });
+    sv('juiceSales',sal);
+    cust[cu]={type:sTyp,size:String(sz)};
+    sv('juiceCustomers',cust);
+    document.getElementById('saleCustomer').value='';
+    document.getElementById('saleQty').value='1';
+    document.getElementById('salePaid').value='';
+    document.getElementById('salePaid').dataset.auto='true';
+    updSP();renderSal();updSum();
+    showToast('🛒 '+cu+' '+pa+'₪');
+    dataChanged();
+}
+function setSF(m,b){
+    sFilt=m;
+    document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    renderSal();
+}
+function renderSal(){
+    const c=document.getElementById('salesList'),cl=document.getElementById('clearSalesBtn');
+    let f=sal;
+    if(sFilt==='regular')f=sal.filter(s=>s.type==='regular');
+    else if(sFilt==='vip')f=sal.filter(s=>s.type==='vip');
+    else if(sFilt==='100')f=sal.filter(s=>s.size===100);
+    else if(sFilt==='500')f=sal.filter(s=>s.size===500);
+    document.getElementById('statSalesCount').textContent=sal.length;
+    document.getElementById('statSalesRevenue').textContent=sal.reduce((s,x)=>s+x.paid,0).toFixed(0);
+    document.getElementById('statBottlesSold').textContent=sal.reduce((s,x)=>s+x.qty,0);
+    if(!f.length){
+        c.innerHTML='<div class="empty-state"><div class="empty-icon">🛒</div><div class="empty-text">'+(sal.length?'No match':'No sales')+'</div></div>';
+        cl.style.display=sal.length?'block':'none';return;
+    }
+    cl.style.display='block';
+    c.innerHTML=f.map(s=>{
+        const d=s.paid<s.suggested?`<span style="font-size:11px;color:#d63031;font-weight:600;margin-left:4px">-${(s.suggested-s.paid).toFixed(0)}₪</span>`:'';
+        return`<div class="sale-item"><div class="sale-top"><div><div class="sale-customer">${s.customer}</div><div class="sale-date-info">${s.date}·${s.time}</div></div><div class="sale-badges"><span class="sale-badge ${s.type}">${s.type==='vip'?'⭐':'🏷️'}</span><span class="sale-badge size-${s.size}">${s.size}ml</span></div></div><div class="sale-bottom"><span class="sale-amount">${s.paid.toFixed(0)}₪${d}</span><span style="font-size:11px;color:#636e72">${s.qty}×${s.size}ml</span><button class="sale-delete-btn" onclick="delSal(${s.id})">🗑️</button></div></div>`;
+    }).join('');
+}
+function delSal(id){
+    sal=sal.filter(s=>s.id!==id);
+    sv('juiceSales',sal);
+    renderSal();updSum();showToast('🗑️');
+    dataChanged();
+}
+function updSum(){
+    const tr=sal.reduce((s,x)=>s+x.paid,0),tm=sal.reduce((s,x)=>s+x.totalMl,0);
+    const tc=tm*gCPM(),pr=tr-tc,mg=tr>0?pr/tr*100:0,tb=sal.reduce((s,x)=>s+x.qty,0);
+    document.getElementById('sumRev').textContent=tr.toFixed(0)+'₪';
+    document.getElementById('sumCost').textContent=tc.toFixed(0)+'₪';
+    document.getElementById('sumProfit').textContent=pr.toFixed(0)+'₪';
+    document.getElementById('sumMargin').textContent=mg.toFixed(1)+'%';
+    document.getElementById('sumMl').textContent=tm;
+    document.getElementById('sumBtl').textContent=tb+'btl';
+    const rg=sal.filter(s=>s.type==='regular'),vi=sal.filter(s=>s.type==='vip');
+    document.getElementById('sRC').textContent=rg.length;
+    document.getElementById('sRM').textContent=rg.reduce((s,x)=>s+x.totalMl,0);
+    document.getElementById('sRR').textContent=rg.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';
+    document.getElementById('sVC').textContent=vi.length;
+    document.getElementById('sVM').textContent=vi.reduce((s,x)=>s+x.totalMl,0);
+    document.getElementById('sVR').textContent=vi.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';
+    const s1=sal.filter(s=>s.size===100),s5=sal.filter(s=>s.size===500);
+    document.getElementById('s1C').textContent=s1.length;
+    document.getElementById('s1Q').textContent=s1.reduce((s,x)=>s+x.qty,0);
+    document.getElementById('s1R').textContent=s1.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';
+    document.getElementById('s5C').textContent=s5.length;
+    document.getElementById('s5Q').textContent=s5.reduce((s,x)=>s+x.qty,0);
+    document.getElementById('s5R').textContent=s5.reduce((s,x)=>s+x.paid,0).toFixed(0)+'₪';
+    const cm={};
+    sal.forEach(s=>{
+        if(!cm[s.customer])cm[s.customer]={paid:0,qty:0,ml:0,type:s.type};
+        cm[s.customer].paid+=s.paid;
+        cm[s.customer].qty+=s.qty;
+        cm[s.customer].ml+=s.totalMl;
+    });
+    const so=Object.entries(cm).sort((a,b)=>b[1].paid-a[1].paid).slice(0,10);
+    const tc2=document.getElementById('topCust');
+    if(!so.length) tc2.innerHTML='';
+    else tc2.innerHTML=so.map(([n,d])=>`<div class="customer-summary-item"><div class="cs-top"><span class="cs-name">${n}</span><span class="cs-total">${d.paid.toFixed(0)}₪</span></div><div class="cs-details"><span>${d.qty}btl</span><span>${d.ml}ml</span><span class="sale-badge ${d.type}" style="font-size:9px">${d.type==='vip'?'⭐':'🏷️'}</span></div></div>`).join('');
+}
 
 // === BACKUP ===
-function exportFile(){const data={version:2,exported:new Date().toISOString(),supply:sup,recipes:rec,history:his,sales:sal,customers:cust,salePrefs:{type:sTyp,size:sSiz}};const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='juice-'+new Date().toISOString().split('T')[0]+'.json';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);showToast('📤 Exported!')}
-function importFile(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(e){try{const d=JSON.parse(e.target.result);if(!d.version)return showToast('❌ Invalid!');sMod('📥','Import?',`Replace data from <strong>${new Date(d.exported).toLocaleDateString()}</strong>?`,`<div class="modal-detail-row"><span>Recipes</span><span class="mdv">${(d.recipes||[]).length}</span></div><div class="modal-detail-row"><span>Sales</span><span class="mdv">${(d.sales||[]).length}</span></div>`,'Import','confirm-green',()=>{sup=d.supply||{nic:0,hrq:0,pg:0,vg:0};rec=d.recipes||[];his=d.history||[];sal=d.sales||[];cust=d.customers||{};sv('juiceSupply',sup);sv('juiceRecipes',rec);sv('juiceHistory',his);sv('juiceSales',sal);sv('juiceCustomers',cust);if(d.salePrefs)sv('juiceSalePrefs',d.salePrefs);refreshAll();showToast('✅ Imported!');debouncedSync()})}catch{showToast('❌ Invalid!')}};r.readAsText(f);ev.target.value=''}
-function updBkInfo(){const ls=ld('juiceLastSync',null);document.getElementById('lastSyncLabel').textContent=ls?new Date(ls).toLocaleDateString()+' '+new Date(ls).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'Never';const a=sup.nic+sup.hrq+sup.pg+sup.vg;document.getElementById('bkSup').textContent=a>0?'✅':'—';document.getElementById('bkRec').textContent=rec.length;document.getElementById('bkHis').textContent=his.length;document.getElementById('bkSal').textContent=sal.length;document.getElementById('bkCus').textContent=Object.keys(cust).length}
+function exportFile(){
+    const data={version:2,exported:new Date().toISOString(),supply:sup,recipes:rec,history:his,sales:sal,customers:cust,salePrefs:{type:sTyp,size:sSiz},_timestamp:getLocalTimestamp()};
+    const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const u=URL.createObjectURL(b);
+    const a=document.createElement('a');
+    a.href=u;a.download='juice-'+new Date().toISOString().split('T')[0]+'.json';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    URL.revokeObjectURL(u);
+    showToast('📤 Exported!');
+}
+function importFile(ev){
+    const f=ev.target.files[0];if(!f)return;
+    const r=new FileReader();
+    r.onload=function(e){
+        try{
+            const d=JSON.parse(e.target.result);
+            if(!d.version)return showToast('❌ Invalid!');
+            sMod('📥','Import?',`Replace with backup from <strong>${new Date(d.exported).toLocaleDateString()}</strong>?`,
+                `<div class="modal-detail-row"><span>Recipes</span><span class="mdv">${(d.recipes||[]).length}</span></div><div class="modal-detail-row"><span>Sales</span><span class="mdv">${(d.sales||[]).length}</span></div>`,
+                'Import','confirm-green',()=>{
+                    applyCloudData(d);
+                    showToast('✅ Imported!');
+                    dataChanged();
+                });
+        }catch{showToast('❌ Invalid!')}
+    };
+    r.readAsText(f);ev.target.value='';
+}
+function updBkInfo(){
+    const ls=ld('juiceLastSync',null);
+    document.getElementById('lastSyncLabel').textContent=ls?new Date(ls).toLocaleDateString()+' '+new Date(ls).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'Never';
+    const a=sup.nic+sup.hrq+sup.pg+sup.vg;
+    document.getElementById('bkSup').textContent=a>0?'✅':'—';
+    document.getElementById('bkRec').textContent=rec.length;
+    document.getElementById('bkHis').textContent=his.length;
+    document.getElementById('bkSal').textContent=sal.length;
+    document.getElementById('bkCus').textContent=Object.keys(cust).length;
+}
 
-function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+function showToast(m){
+    const t=document.getElementById('toast');
+    t.textContent=m;t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2500);
+}
 
 // === INIT ===
-window.addEventListener('load',()=>{
-    sup=ld('juiceSupply',{nic:0,hrq:0,pg:0,vg:0});rec=ld('juiceRecipes',[]);his=ld('juiceHistory',[]);sal=ld('juiceSales',[]);cust=ld('juiceCustomers',{});
+window.addEventListener('load', () => {
+    sup=ld('juiceSupply',{nic:0,hrq:0,pg:0,vg:0});
+    rec=ld('juiceRecipes',[]);
+    his=ld('juiceHistory',[]);
+    sal=ld('juiceSales',[]);
+    cust=ld('juiceCustomers',{});
     refreshAll();
-    // Initial sync — try to pull from cloud if local is empty
-    const hasLocal=rec.length||his.length||sal.length||(sup.nic+sup.hrq+sup.pg+sup.vg>0);
-    if(!hasLocal){pullFromCloud()}else{syncToCloud()}
+
+    // Smart sync on load — always checks cloud
+    smartSync();
+
+    // Also sync when app becomes visible again (switching back to tab/app)
+    document.addEventListener('visibilitychange', () => {
+        if(document.visibilityState === 'visible'){
+            smartSync();
+        }
+    });
 });
 </script>
 </body>
 </html>
+
